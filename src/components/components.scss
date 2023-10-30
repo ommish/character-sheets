@@ -1,0 +1,55 @@
+@import '../variables.scss';
+
+.accordion {
+  margin: 8px;
+  .accordion-title {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 0;
+  }
+  &.closed .accordion-title svg {
+    transform: rotate(180deg);
+  }
+  .accordion-content {
+    max-height: 600px;
+    transition: all 0.2s ease-in;
+    overflow-y: auto;
+  }
+  &.closed .accordion-content {
+    max-height: 0px;
+    transition: all 0.2s ease-out;
+    overflow-y: hidden;
+  }
+}
+
+.tooltip-container {
+  position: relative;
+  cursor: pointer;
+  .tooltip {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    visibility: hidden;
+    width: 200px;
+    text-transform: none;
+    font-weight: 600;
+    font-size: $text-xs;
+  }
+  &:hover .tooltip {
+    visibility: visible;
+    background: $color-primary;
+    color: white;
+    border: 1px solid $color-primary;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    z-index: 10;
+  }
+  .info-icon {
+    font-weight: 300;
+    font-size: $text-xs;
+    color: $color-primary;
+    margin-left: 0.25rem;
+    display: inline;
+  }
+}

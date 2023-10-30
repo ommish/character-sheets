@@ -1,0 +1,63 @@
+.character-create {
+  width: 100%;
+  height: calc(100% - 72px);
+
+  form {
+    padding: 16px;
+    fieldset{
+      margin: 16px;
+      legend {
+        margin: 0 6px;
+      }
+    }
+    > fieldset {
+      margin: 32px 16px;
+    }
+    label {
+      margin: 12px;
+      & > span {
+        margin-right: 6px;
+      }
+    }
+   & > label, > div > label, fieldset > legend {
+      font-weight: 700;
+    }
+    fieldset > label {
+      font-weight: 600;
+    }
+  }
+
+  .grid-a {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    column-gap: 48px;
+    label {
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 200px;
+        height: min-content;
+      }
+    }
+  }
+
+  .grid-b {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 400px);
+    column-gap: 48px;
+  }
+
+  .save {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 12px 24px;
+    }
+  }
+
+  .add {
+    margin-bottom: 16px;
+    margin-left: 16px;
+  }
+
+}

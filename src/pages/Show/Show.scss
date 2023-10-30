@@ -1,0 +1,152 @@
+@import '../../variables.scss';
+
+.character-show {
+  min-width: 1200px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 36px;
+  height: calc(100% - 72px);
+
+  display: grid;
+  grid:
+    [row1-start] 'grid-a grid-b grid-b' min-content [row1-end]
+    [row2-start] 'grid-c grid-d grid-e' min-content [row2-end]
+    [row3-start] 'grid-f grid-f grid-f' min-content [row3-end]
+    / calc(33% - 0.8rem) calc(33% - 0.8rem) calc(34% - 0.8rem);
+  grid-gap: 1.2rem;
+  box-sizing: border-box;
+  align-items: start;
+  white-space: pre-wrap;
+
+  .patterns-left,
+  .patterns-right {
+    min-height: 100%;
+    min-width: 120px;
+    position: fixed;
+    top: 0;
+    z-index: -1;
+    background-repeat: repeat-y;
+    background-size: contain;
+    opacity: 0.1;
+  }
+  .patterns-left {
+    left: 0;
+  }
+  .patterns-right {
+    right: 0;
+    transform: scaleY(-1);
+  }
+
+  .grid-a {
+    grid-area: grid-a;
+  }
+  .grid-b {
+    grid-area: grid-b;
+  }
+  .grid-c {
+    grid-area: grid-c;
+  }
+  .grid-d {
+    grid-area: grid-d;
+    .attacks-grid {
+      display: grid;
+      grid-template-columns: 45% 20% 35%;
+    }
+  }
+  .grid-e {
+    grid-area: grid-e;
+  }
+  .grid-f {
+    grid-area: grid-f;
+  }
+
+  .bordered-box {
+    border: 1px solid $color-grey;
+    border-radius: 4px;
+    padding: 0.5rem;
+    height: min-content;
+  }
+
+  .label-1 {
+    font-size: $text-xs;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+  }
+  .label-2 {
+    font-size: $text-xs;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .label-3 {
+    font-size: $text-xs;
+    font-weight: 600;
+  }
+
+  .value-1 {
+    font-size: $text-md;
+    font-weight: 400;
+  }
+  .value-2 {
+    font-size: $text-sm;
+    font-weight: 400;
+  }
+  .value-3 {
+    font-size: $text-xs;
+    font-weight: 400;
+  }
+  
+  .scores-grid {
+    display: grid;
+    grid-template-columns: 132px calc(100% - 132px);
+    .proficiencies-grid {
+      display: grid;
+      grid-template-columns: 84px calc(100% - 84px);
+    }
+  }
+
+  .notes {
+    display: none;
+
+    min-height: 100px;
+    font-size: smaller;
+    border-color: $color-primary;
+    font-weight: 300;
+    font-size: smaller;
+    .label-2 {
+      display: flex;
+      align-items: center;
+      .info-icon {
+        color: $color-primary;
+        margin-left: 4px;
+      }
+    }
+    
+    .label-3 {
+      text-decoration: underline;
+    }
+  }
+
+  .status-effects ul {
+    min-height: 10px;
+  }
+
+  .edit {
+    position: fixed;
+    right: 40px;
+  }
+
+  @media print {
+    .edit {
+      display: none;
+    }
+  
+    .notes {
+      display: block;
+    }
+  
+    .grid-f {
+      break-before: page;
+    }
+  }  
+}
