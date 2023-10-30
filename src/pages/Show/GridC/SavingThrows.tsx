@@ -4,7 +4,7 @@ import { CheckCircleFill, Circle } from 'react-bootstrap-icons';
 import { SignedNumber } from '../../../components';
 import { Info } from '../../../components/Info';
 import { ABILITIES } from '../../../types';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const SavingThrows: React.FC = () => {
   const character = useCharacter();

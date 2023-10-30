@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { d10, d12, d20, d4, d6, d8 } from './icons';
 
 type Die = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
@@ -23,9 +29,12 @@ const diceIcons = {
   d100: d10,
 };
 
-const useOnClickOutside = (ref: any, onClickOutside: () => void) => {
+const useOnClickOutside = (
+  ref: RefObject<HTMLElement>,
+  onClickOutside: () => void,
+) => {
   const handleClick = useCallback((e: MouseEvent) => {
-    if (ref && ref.current && ref.current.contains(e.target)) {
+    if (ref.current && e.target && ref.current.contains(e.target as Node)) {
       // ignore inside click
       return;
     }
@@ -46,9 +55,13 @@ const useOnClickOutside = (ref: any, onClickOutside: () => void) => {
 export const Dice: React.FC = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [dice, setDice] = useState<{ die: Die; roll: number }[]>([]);
-  const onReset = useCallback(() => setDice([]), []);
+  const onReset = useCallback(() => {
+    setDice([]);
+  }, []);
   const [showDice, setShow] = useState(false);
-  const onShow = useCallback(() => setShow(true), []);
+  const onShow = useCallback(() => {
+    setShow(true);
+  }, []);
   const onHide = useCallback(() => {
     setShow(false);
     onReset();
@@ -106,7 +119,6 @@ export const Dice: React.FC = () => {
             >
               <div className="label">{die}</div>
               {diceIcons[die](
-                /* eslint-disable no-nested-ternary */
                 die === 'd20' && roll === 1
                   ? 'error5'
                   : die === 'd20' && roll === 20

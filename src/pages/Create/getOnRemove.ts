@@ -1,9 +1,18 @@
+import { getElement } from '../../formUtils/getElement';
+
+const getParent = (el: HTMLElement) => {
+  if (!el.parentElement) {
+    throw new Error('Expected element to have parent');
+  }
+  return el.parentElement;
+};
+
 export const getOnRemove =
   (idGetters: ((index: number) => string)[]): GlobalEventHandlers['onclick'] =>
   (e) => {
     let idx = 0;
-    const fieldEl = (e.currentTarget as HTMLButtonElement).parentElement!;
-    const listEl = fieldEl.parentElement!;
+    const fieldEl = getParent(e.currentTarget as HTMLButtonElement);
+    const listEl = getParent(fieldEl);
     listEl.childNodes.forEach((node, i) => {
       console.log('i', i);
       console.log('node', node);
@@ -14,7 +23,7 @@ export const getOnRemove =
     for (let i = idx + 1; i < listEl.children.length; i++) {
       idGetters.forEach((idGetter) => {
         const id = idGetter(i - 1);
-        const el = document.getElementById(id)! as HTMLInputElement;
+        const el = getElement(id) as HTMLInputElement;
         const newId = idGetter(i - 2);
         el.id = newId;
         el.name = newId;

@@ -49,32 +49,32 @@ export const SKILLS = [
   'survival',
 ] as const;
 export type Skill = (typeof SKILLS)[number];
-export type SkillBlock = {
+export interface SkillBlock {
   proficient: boolean;
   ability: Ability;
   additionalBonus: number;
   notes: string;
-};
+}
 export type Skills = Record<Skill, SkillBlock>;
 
-export type SaveBlock = {
+export interface SaveBlock {
   proficient: boolean;
   additionalBonus: number;
   notes: string;
-};
+}
 export type Saves = Record<Ability, SaveBlock>;
 
 export type ArmorType = 'heavy' | 'medium' | 'light';
 
-export type Initiative = {
+export interface Initiative {
   additionalBonus: number;
   notes?: string;
-};
+}
 
-export type Proficiency = {
+export interface Proficiency {
   name: string;
   notes?: string;
-};
+}
 export const PROFICIENCIES = [
   'weapons',
   'armor',
@@ -101,7 +101,7 @@ export const DAMAGE_TYPES = [
 ] as const;
 export type DamageType = (typeof DAMAGE_TYPES)[number];
 
-export type Weapon = {
+export interface Weapon {
   name: string;
   proficient: boolean;
   ability: Ability;
@@ -110,40 +110,44 @@ export type Weapon = {
   additionalDamage: number;
   remainingUses: number | null;
   notes?: string;
-};
+}
 
-export type Item = { name: string; notes?: string; link?: string };
+export interface Item {
+  name: string;
+  notes?: string;
+  link?: string;
+}
 
 export const CURRENCIES = ['copper', 'silver', 'gold', 'platinum'] as const;
 export type Money = Record<(typeof CURRENCIES)[number], number | null>;
 
-export type Feature = {
+export interface Feature {
   name: string;
   description: string;
   remainingUses: number | null;
-};
+}
 
-export type Health = {
+export interface Health {
   max: number;
   current?: number;
   temp: number;
   dice?: number;
-};
+}
 
-export type DeathSaves = {
+export interface DeathSaves {
   successes: number;
   failures: number;
-};
+}
 
-export type ArmorClass = {
+export interface ArmorClass {
   ac: number;
   notes?: string;
-};
+}
 
-export type Speed = {
+export interface Speed {
   feet: number;
   notes?: string;
-};
+}
 
 export const STATUS_EFFECTS = [
   'Blinded',
@@ -164,26 +168,30 @@ export const STATUS_EFFECTS = [
 ] as const;
 export type StatusEffect = (typeof STATUS_EFFECTS)[number];
 
-export type DC = {
+export interface DC {
   ability: Ability;
-};
+}
 
-export type Spell = {
+export interface Spell {
   name: string;
   notes: string;
   prepared?: boolean;
-};
+}
 
 export const SPELL_LEVELS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
-export type Spells = {
-  [level: string]: {
-    total: null | number;
-    remaining: null | number;
-    spells: Spell[];
-  };
-};
+export type SpellLevel = `${(typeof SPELL_LEVELS)[number]}`;
+export type Spells = Partial<
+  Record<
+    SpellLevel,
+    {
+      total: null | number;
+      remaining: null | number;
+      spells: Spell[];
+    }
+  >
+>;
 
-export type Character = {
+export interface Character {
   campaign: string;
   name: string;
   level: number;
@@ -211,9 +219,9 @@ export type Character = {
   dc: DC;
   spells: Spells;
   pattern?: string;
-};
+}
 
-export type DigestedCharacter = {
+export interface DigestedCharacter {
   name: string;
   campaign: string;
   level: number;
@@ -244,4 +252,4 @@ export type DigestedCharacter = {
   spellSaveDC: number;
   spellAttackBonus: number;
   pattern?: string;
-};
+}

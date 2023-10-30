@@ -1,7 +1,7 @@
 import { indexOf } from 'lodash';
 import React from 'react';
 import { STATUS_EFFECTS } from '../../../types';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const StatusEffects: React.FC = () => {
   const character = useCharacter();

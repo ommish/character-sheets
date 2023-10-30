@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AccordionList } from '../../../components';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const Features: React.FC = () => {
   const character = useCharacter();
@@ -25,7 +25,12 @@ export const Features: React.FC = () => {
         toggleAll={toggleAll}
       />
       <div className="label-1 mt-1">
-        <button type="button" onClick={() => setToggleAll(Date.now())}>
+        <button
+          type="button"
+          onClick={() => {
+            setToggleAll(Date.now());
+          }}
+        >
           Features & Traits
         </button>
       </div>

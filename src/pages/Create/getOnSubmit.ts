@@ -15,6 +15,14 @@ import {
   StatusEffect,
 } from '../../types';
 import { NavigateFunction } from 'react-router-dom';
+import { getElement } from '../../formUtils/getElement';
+import {
+  EQUIPMENT_ID,
+  FEATURES_ID,
+  PROFICIENCIES_ID,
+  SPELL_LIST_ID,
+  WEAPONS_ID,
+} from '../../formUtils/formIds';
 
 export const getOnSubmit =
   (navigate: NavigateFunction): FormEventHandler =>
@@ -157,8 +165,7 @@ export const getOnSubmit =
     );
     PROFICIENCIES.forEach((proficiency) => {
       proficiencies[proficiency] = new Array(
-        document.getElementById(`proficiencies.${proficiency}`)!.children
-          .length - 1,
+        getElement(PROFICIENCIES_ID(proficiency)).children.length - 1,
       )
         .fill(null)
         .map((_, i) => ({
@@ -175,9 +182,7 @@ export const getOnSubmit =
         }));
     });
 
-    const equipment = new Array(
-      document.getElementById('equipment')!.children.length - 1,
-    )
+    const equipment = new Array(getElement(EQUIPMENT_ID()).children.length - 1)
       .fill(null)
       .map((_, i) => ({
         name: (
@@ -188,9 +193,7 @@ export const getOnSubmit =
         ).value,
       }));
 
-    const features = new Array(
-      document.getElementById('features')!.children.length - 1,
-    )
+    const features = new Array(getElement(FEATURES_ID()).children.length - 1)
       .fill(null)
       .map((_, i) => ({
         name: (
@@ -205,9 +208,7 @@ export const getOnSubmit =
       }));
     console.log('features', features);
 
-    const weapons = new Array(
-      document.getElementById('weapons')!.children.length - 1,
-    )
+    const weapons = new Array(getElement(WEAPONS_ID()).children.length - 1)
       .fill(null)
       .map((_, i) => ({
         name: (document.getElementById(`weapons.${i}.name`) as HTMLInputElement)
@@ -268,7 +269,7 @@ export const getOnSubmit =
     let showSpells = false;
     SPELL_LEVELS.forEach((level) => {
       const spellsList = new Array(
-        document.getElementById(`spells.${level}.spells`)!.children.length - 1,
+        getElement(SPELL_LIST_ID(level.toString())).children.length - 1,
       ).fill(null);
       if (spellsList.length) {
         showSpells = true;

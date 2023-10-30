@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ABILITIES, PROFICIENCIES, SKILLS, SPELL_LEVELS } from '../../types';
-import { useCharacters } from '../../useCharacters';
+import { useCharacters } from '../../hooks/useCharacters';
 import { Create } from '../Create';
-import { addEquipment } from '../Create/Equipment';
-import { addFeature } from '../Create/Features';
-import { addProficiency } from '../Create/Proficiencies';
-import { addSpell } from '../Create/Spells';
-import { addWeapon } from '../Create/Weapons';
+import { addEquipment } from '../../formUtils/addEquipment';
+import { addFeature } from '../../formUtils/addFeature';
+import { addProficiency } from '../../formUtils/addProficiency';
+import { addSpell } from '../../formUtils/addSpell';
+import { addWeapon } from '../../formUtils/addWeapon';
 import { Who } from '../Who';
 import './Edit.scss';
 
@@ -39,16 +39,16 @@ export const Edit: React.FC = () => {
     (document.getElementById('speed.feet') as HTMLInputElement).value =
       character.speed.feet.toString();
     (document.getElementById('speed.notes') as HTMLInputElement).value =
-      character.speed.notes || '';
+      character.speed.notes ?? '';
     (document.getElementById('armorClass.ac') as HTMLInputElement).value =
       character.armorClass.ac.toString();
     (document.getElementById('armorClass.notes') as HTMLInputElement).value =
-      character.armorClass.notes || '';
+      character.armorClass.notes ?? '';
     (
       document.getElementById('initiative.additionalBonus') as HTMLInputElement
     ).value = character.initiative.additionalBonus.toString();
     (document.getElementById('initiative.notes') as HTMLInputElement).value =
-      character.initiative.notes || '';
+      character.initiative.notes ?? '';
 
     (document.getElementById('health.max') as HTMLInputElement).value =
       character.health.max.toString();
@@ -71,10 +71,10 @@ export const Edit: React.FC = () => {
         document.getElementById(
           `skills.${skill}.additionalBonus`,
         ) as HTMLInputElement
-      ).value = character.skills[skill]?.additionalBonus?.toString() || '';
+      ).value = character.skills[skill]?.additionalBonus?.toString() ?? '';
       (
         document.getElementById(`skills.${skill}.notes`) as HTMLInputElement
-      ).value = character.skills[skill]?.notes || '';
+      ).value = character.skills[skill]?.notes ?? '';
     });
     ABILITIES.forEach((save) => {
       (
@@ -84,10 +84,10 @@ export const Edit: React.FC = () => {
         document.getElementById(
           `saves.${save}.additionalBonus`,
         ) as HTMLInputElement
-      ).value = character.saves[save]?.additionalBonus?.toString() || '';
+      ).value = character.saves[save]?.additionalBonus?.toString() ?? '';
       (
         document.getElementById(`saves.${save}.notes`) as HTMLInputElement
-      ).value = character.saves[save]?.notes || '';
+      ).value = character.saves[save]?.notes ?? '';
     });
     PROFICIENCIES.forEach((category) => {
       character.proficiencies[category].forEach((proficiency) => {
@@ -111,13 +111,14 @@ export const Edit: React.FC = () => {
       character.dc.ability;
 
     SPELL_LEVELS.forEach((level) => {
-      if (character.spells[level]) {
+      const spells = character.spells[level];
+      if (spells) {
         if (level !== 0) {
           (
             document.getElementById(`spells.${level}.total`) as HTMLInputElement
-          ).value = character.spells[level].total?.toString() || '';
+          ).value = spells.total?.toString() ?? '';
         }
-        character.spells[level].spells.forEach((spell) => {
+        spells.spells.forEach((spell) => {
           addSpell(level.toString(), spell);
         });
       }

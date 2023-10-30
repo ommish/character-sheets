@@ -1,7 +1,7 @@
 import React from 'react';
 import { SignedNumber } from '../../../components';
 import { Info } from '../../../components/Info';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const Attacks: React.FC = () => {
   const character = useCharacter();

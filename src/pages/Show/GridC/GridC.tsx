@@ -7,7 +7,7 @@ import { SavingThrows } from './SavingThrows';
 import { Skills } from './Skills';
 import { Notes } from './Notes';
 
-export const GridC = forwardRef<HTMLElement, {}>((_, ref) => {
+export const GridC = forwardRef<HTMLElement, object>(function GridC(_, ref) {
   return (
     <section className="grid-c" ref={ref}>
       <div className="scores-grid">

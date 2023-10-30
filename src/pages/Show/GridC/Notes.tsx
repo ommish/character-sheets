@@ -1,6 +1,6 @@
 import React from 'react';
 import { ABILITIES, PROFICIENCIES, SKILLS } from '../../../types';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 import { capitalize, startCase } from 'lodash';
 import { InfoCircle } from 'react-bootstrap-icons';
 

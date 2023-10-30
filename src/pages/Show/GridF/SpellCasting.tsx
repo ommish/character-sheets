@@ -1,6 +1,6 @@
 import React from 'react';
 import { SignedNumber } from '../../../components';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const SpellCasting: React.FC = () => {
   const character = useCharacter();

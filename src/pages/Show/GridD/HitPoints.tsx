@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const HitPoints: React.FC = () => {
   const character = useCharacter();

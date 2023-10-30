@@ -1,7 +1,7 @@
 import React from 'react';
 import { Info } from '../../../components';
 import { PROFICIENCIES } from '../../../types';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const Proficiencies: React.FC = () => {
   const character = useCharacter();

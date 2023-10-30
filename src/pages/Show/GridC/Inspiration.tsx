@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircleFill, Circle } from 'react-bootstrap-icons';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const Inspiration: React.FC = () => {
   const character = useCharacter();

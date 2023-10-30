@@ -9,7 +9,7 @@ import { Initiative } from './Initiative';
 import { Speed } from './Speed';
 import { TempHitPoints } from './TempHitPoints';
 
-export const GridD = forwardRef<HTMLElement, {}>((_, ref) => {
+export const GridD = forwardRef<HTMLElement, object>(function GridD(_, ref) {
   return (
     <section className="grid-d" ref={ref}>
       <div className="flex">

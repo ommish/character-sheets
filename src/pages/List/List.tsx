@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteCharacter, storeCharacter } from '../../data/store';
 import { Character } from '../../types';
-import { useCharacters } from '../../useCharacters';
+import { useCharacters } from '../../hooks/useCharacters';
 
 export const List: React.FC = () => {
   const navigate = useNavigate();
@@ -47,14 +47,18 @@ export const List: React.FC = () => {
           type="file"
           accept=".json"
           onChange={(e) => {
-            const file = e.currentTarget.files![0];
+            if (!e.currentTarget.files) {
+              return;
+            }
+            const file = e.currentTarget.files[0];
             const reader = new FileReader();
             reader.onload = (e) => {
-              console.log(e.target?.result);
-              if (e.target?.result) {
-                const character: Character = JSON.parse(
-                  e.target.result as string,
-                );
+              if (!e.target) {
+                return;
+              }
+              const result = e.target.result;
+              if (typeof result === 'string') {
+                const character = JSON.parse(result) as Character;
                 character.name = character.name.split('---')[0];
                 storeCharacter(character);
                 navigate(`/${character.name}/edit`);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Info } from '../../../../components/Info';
-import { useCharacter } from '../../../useCharacter';
+import { useCharacter } from '../../../../hooks/useCharacter';
 
 export const Items: React.FC = () => {
   const character = useCharacter();

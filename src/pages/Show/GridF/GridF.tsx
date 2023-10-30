@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 import './GridF.scss';
 import { SpellCasting } from './SpellCasting';
 import { Spells } from './Spells';

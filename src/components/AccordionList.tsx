@@ -23,9 +23,9 @@ export const AccordionList: React.FC<{
           title={accordion.title}
           content={accordion.content}
           isOpen={openStates[i]}
-          setIsOpen={(isOpen: boolean) =>
-            setOpenStates(openStates.map((o, j) => (i === j ? isOpen : o)))
-          }
+          setIsOpen={(isOpen: boolean) => {
+            setOpenStates(openStates.map((o, j) => (i === j ? isOpen : o)));
+          }}
         />
       ))}
     </>

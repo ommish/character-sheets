@@ -12,7 +12,9 @@ export const Accordion: React.FC<{
       <button
         type="button"
         className="accordion-title flex align-center justify-between"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
       >
         {title}
         <ChevronUp />

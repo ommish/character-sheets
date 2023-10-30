@@ -1,7 +1,7 @@
 import React from 'react';
 import { SignedNumber } from '../../../components';
 import { ABILITIES } from '../../../types';
-import { useCharacter } from '../../useCharacter';
+import { useCharacter } from '../../../hooks/useCharacter';
 
 export const AbilityScores: React.FC = () => {
   const character = useCharacter();

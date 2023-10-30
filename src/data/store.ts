@@ -5,14 +5,18 @@ const NAME_KEY = 'characters' as const;
 const CHARACTER_KEY = (name: string) => `characters.${name}`;
 
 export const getStoredCharacterNames = () => {
-  return JSON.parse(localStorage.getItem(NAME_KEY) || '[]') as string[];
+  return JSON.parse(localStorage.getItem(NAME_KEY) ?? '[]') as string[];
 };
 
 export const getStoredCharacters = () => {
   const names = getStoredCharacterNames();
-  return names.map((name) =>
-    JSON.parse(localStorage.getItem(CHARACTER_KEY(name))!),
-  ) as Character[];
+  return names.map((name) => {
+    const character = localStorage.getItem(CHARACTER_KEY(name));
+    if (!character) {
+      throw new Error(`Character data for ${name} not found.`);
+    }
+    return JSON.parse(character) as Character;
+  });
 };
 
 export const storeCharacter = (character: Character) => {

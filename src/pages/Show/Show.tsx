@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useCharacters } from '../../useCharacters';
+import { useCharacters } from '../../hooks/useCharacters';
 import { Who } from '../Who';
 import { GridA } from './GridA';
 import { GridB } from './GridB';
