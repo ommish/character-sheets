@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { list } from '../../data/list';
+import { useCharacters } from '../../useCharacters';
 import { Who } from '../Who';
 import { GridA } from './GridA';
 import { GridB } from './GridB';
@@ -16,7 +16,7 @@ export const Show: React.FC = () => {
   const col3 = useRef<HTMLElement>(null);
 
   const { name } = useParams();
-  const character = list.find((ch) => ch.name === name);
+  const character = useCharacters().find((ch) => ch.name === name);
   if (!character) {
     return <Who />;
   }

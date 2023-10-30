@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { list } from '../../data/list';
 import { ABILITIES, PROFICIENCIES, SKILLS, SPELL_LEVELS } from '../../types';
+import { useCharacters } from '../../useCharacters';
 import { Create } from '../Create';
 import { addEquipment } from '../Create/Equipment';
 import { addFeature } from '../Create/Features';
@@ -14,7 +14,7 @@ import './Edit.scss';
 export const Edit: React.FC = () => {
   const { name } = useParams();
 
-  const character = list.find((ch) => ch.name === name);
+  const character = useCharacters().find((ch) => ch.name === name);
 
   if (!character) {
     return <Who />;

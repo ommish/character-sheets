@@ -1,15 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { list } from '../../data/list';
+import { Link, useNavigate } from 'react-router-dom';
 import { deleteCharacter, storeCharacter } from '../../data/store';
 import { Character } from '../../types';
+import { useCharacters } from '../../useCharacters';
 
 export const List: React.FC = () => {
+  const navigate = useNavigate();
+  const characters = useCharacters();
   return (
     <main>
       <h2 className="pl-2">Characters</h2>
       <ul className="mb-2">
-        {list.map(({ name }) => (
+        {characters.map(({ name }) => (
           <li key={name}>
             {name}
             <span className="ml-2">
@@ -55,7 +57,7 @@ export const List: React.FC = () => {
                 );
                 character.name = character.name.split('---')[0];
                 storeCharacter(character);
-                window.location.assign(`/${character.name}/edit`);
+                navigate(`/${character.name}/edit`);
               }
             };
             reader.readAsText(file);

@@ -1,19 +1,21 @@
 import { capitalize } from 'lodash';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ABILITIES, DICE, SKILLS } from '../../types';
 import './Create.scss';
 import { Equipment } from './Equipment';
 import { Features } from './Features';
 import { Proficiencies } from './Proficiencies';
-import { Weapons } from './Weapons';
-import { onSubmit } from './onSubmit';
 import { Spells } from './Spells';
+import { Weapons } from './Weapons';
+import { getOnSubmit } from './getOnSubmit';
 
 export const Create: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <main className="character-create">
       <section>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={getOnSubmit(navigate)}>
           <div className="save">
             <button type="submit">SAVE</button>
           </div>
