@@ -1,7 +1,7 @@
 import { capitalize } from 'lodash';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ABILITIES, DICE, SKILLS } from '../../types';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ABILITIES, CURRENCIES, DICE, SKILLS } from '../../types';
 import './Create.scss';
 import { Equipment } from './Equipment';
 import { Features } from './Features';
@@ -9,14 +9,17 @@ import { Proficiencies } from './Proficiencies';
 import { Spells } from './Spells';
 import { Weapons } from './Weapons';
 import { getOnSubmit } from './getOnSubmit';
+import { Link } from 'react-router-dom';
 
 export const Create: React.FC = () => {
   const navigate = useNavigate();
+  const { name } = useParams();
   return (
     <main className="character-create">
       <section>
         <form onSubmit={getOnSubmit(navigate)}>
           <div className="save">
+            <Link to={name ? `/${name}` : '/'}>Exit without saving</Link>
             <button type="submit">SAVE</button>
           </div>
           <div className="grid-a">
@@ -55,6 +58,10 @@ export const Create: React.FC = () => {
             <label>
               <span>Background</span>
               <input name="background" id="background" required />
+            </label>
+            <label className="hidden">
+              <span>Inspiration</span>
+              <input type="checkbox" name="inspiration" id="inspiration" />
             </label>
           </div>
           <div className="grid-b">
@@ -134,8 +141,50 @@ export const Create: React.FC = () => {
                   required
                 />
               </label>
+              <label className="hidden">
+                <span>Current</span>
+                <input
+                  name="health.current"
+                  id="health.current"
+                  type="number"
+                  step="1"
+                />
+              </label>
+              <label className="hidden">
+                <span>Temp</span>
+                <input
+                  name="health.temp"
+                  id="health.temp"
+                  type="number"
+                  step="1"
+                />
+              </label>
+              <label className="hidden">
+                <span>Dice</span>
+                <input
+                  name="health.dice"
+                  id="health.dice"
+                  type="number"
+                  step="1"
+                  min="0"
+                />
+              </label>
             </fieldset>
           </div>
+          <fieldset>
+            <legend>Money</legend>
+            {CURRENCIES.map((cr) => (
+              <label key={cr}>
+                <span>{capitalize(cr)}</span>
+                <input
+                  name={`money.${cr}`}
+                  id={`money.${cr}`}
+                  type="number"
+                  step="1"
+                />
+              </label>
+            ))}
+          </fieldset>
           <fieldset>
             <legend>Ability Scores</legend>
             {ABILITIES.map((ability) => (

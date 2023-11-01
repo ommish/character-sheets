@@ -13,7 +13,7 @@ export const SavingThrows: React.FC = () => {
       <div className="proficiencies-grid">
         {ABILITIES.map((ab) => (
           <React.Fragment key={ab}>
-            <div>
+            <div className="flex align-center">
               {character.saves[ab].proficient ? (
                 <CheckCircleFill className="mr-1" />
               ) : (
@@ -38,7 +38,7 @@ export const SavingThrows: React.FC = () => {
           </React.Fragment>
         ))}
       </div>
-      <div className="label-1 mt-2">Saving Throws</div>
+      <div className="label-1 mt-1">Saving Throws</div>
     </div>
   );
 };

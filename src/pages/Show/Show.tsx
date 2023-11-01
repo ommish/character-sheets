@@ -9,6 +9,7 @@ import { GridD } from './GridD';
 import { GridE } from './GridE';
 import { GridF } from './GridF';
 import './Show.scss';
+import { exportCharacter } from '../../data/export';
 
 export const Show: React.FC = () => {
   const col1 = useRef<HTMLElement>(null);
@@ -22,9 +23,19 @@ export const Show: React.FC = () => {
   }
   return (
     <main className="character-show">
-      <Link to={`/${name}/edit`} className="edit">
-        Edit
-      </Link>
+      <div className="sheet-actions">
+        <Link to={`/${name}/edit`} className="mr-1">
+          Edit
+        </Link>
+        <button
+          type="button"
+          onClick={() => {
+            exportCharacter(character);
+          }}
+        >
+          Export
+        </button>
+      </div>
       <div
         className="patterns-left"
         style={{ backgroundImage: `url('${character.pattern}')` }}

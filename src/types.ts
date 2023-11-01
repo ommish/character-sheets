@@ -101,14 +101,18 @@ export const DAMAGE_TYPES = [
 ] as const;
 export type DamageType = (typeof DAMAGE_TYPES)[number];
 
+export interface WeaponDamage {
+  die: Die;
+  count: number;
+  type: DamageType;
+}
 export interface Weapon {
   name: string;
   proficient: boolean;
   ability: Ability;
-  damage: { die: Die; count: number; type: DamageType };
-  additionalToHit: number;
+  damage: WeaponDamage[];
   additionalDamage: number;
-  remainingUses: number | null;
+  additionalToHit: number;
   notes?: string;
 }
 
@@ -124,14 +128,17 @@ export type Money = Record<(typeof CURRENCIES)[number], number | null>;
 export interface Feature {
   name: string;
   description: string;
-  remainingUses: number | null;
+  uses: null | {
+    total: number;
+    remaining: number;
+  };
 }
 
 export interface Health {
   max: number;
   current?: number;
-  temp: number;
-  dice?: number;
+  temp?: number | null;
+  dice?: number | null;
 }
 
 export interface DeathSaves {

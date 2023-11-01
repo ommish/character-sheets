@@ -6,16 +6,28 @@ export const Spells: React.FC<{ level: string }> = ({ level }) => {
     <fieldset>
       <legend>{level === '0' ? 'Cantrips' : `Level ${level} Spells`}</legend>
       {level !== '0' && (
-        <label>
-          <span>Slots</span>
-          <input
-            name={`spells.${level}.total`}
-            id={`spells.${level}.total`}
-            type="number"
-            step="1"
-            min="0"
-          />
-        </label>
+        <>
+          <label>
+            <span>Slots</span>
+            <input
+              name={`spells.${level}.total`}
+              id={`spells.${level}.total`}
+              type="number"
+              step="1"
+              min="0"
+            />
+          </label>
+          <label className="hidden">
+            <span>Remaining</span>
+            <input
+              name={`spells.${level}.remaining`}
+              id={`spells.${level}.remaining`}
+              type="number"
+              step="1"
+              min="0"
+            />
+          </label>
+        </>
       )}
       <fieldset id={`spells.${level}.spells`}>
         <legend>Spells</legend>

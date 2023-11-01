@@ -14,8 +14,7 @@ export const Attacks: React.FC = () => {
         {character.weapons.map((wp) => (
           <React.Fragment key={wp.name}>
             <div className="value-2">
-              {wp.name}{' '}
-              {wp.remainingUses !== null && <span>({wp.remainingUses})</span>}
+              {wp.name}
               <Info title={wp.notes} />
             </div>
             <div className="value-2">
@@ -27,13 +26,23 @@ export const Attacks: React.FC = () => {
                 }
               />
             </div>
-            <div className="value-2">
-              {wp.damage.count}
-              {wp.damage.die}
-              <SignedNumber
-                number={character.modifiers[wp.ability] + wp.additionalDamage}
-              />{' '}
-              {wp.damage.type}
+            <div>
+              {wp.damage.map((damage, i) => (
+                <div key={i} className="value-2">
+                  {damage.count}
+                  {damage.die}
+                  {i === 0 && (
+                    <>
+                      <SignedNumber
+                        number={
+                          character.modifiers[wp.ability] + wp.additionalDamage
+                        }
+                      />
+                    </>
+                  )}{' '}
+                  {damage.type}
+                </div>
+              ))}
             </div>
           </React.Fragment>
         ))}

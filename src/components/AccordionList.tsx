@@ -5,6 +5,7 @@ export const AccordionList: React.FC<{
   accordions: {
     id: string;
     title: ReactNode;
+    action?: ReactNode;
     content: ReactNode;
   }[];
   toggleAll?: number;
@@ -21,6 +22,7 @@ export const AccordionList: React.FC<{
         <Accordion
           key={accordion.id}
           title={accordion.title}
+          action={accordion.action}
           content={accordion.content}
           isOpen={openStates[i]}
           setIsOpen={(isOpen: boolean) => {

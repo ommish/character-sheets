@@ -1,12 +1,8 @@
 import { getOnRemove } from '../pages/Create/getOnRemove';
 import { Item } from '../types';
-import {
-  EQUIPMENT_ID,
-  EQUIPMENT_N_ID,
-  ITEM_N_NAME_ID,
-  ITEM_N_NOTES_ID,
-} from './formIds';
+import { EQUIPMENT_ID, EQUIPMENT_N_ID, NAME_ID, NOTES_ID } from './formIds';
 import { getElement } from './getElement';
+import { makeLabel } from './makeLabel';
 
 export const addEquipment = (equipment?: Item) => {
   const list = getElement(EQUIPMENT_ID());
@@ -17,29 +13,27 @@ export const addEquipment = (equipment?: Item) => {
   remove.type = 'button';
   remove.innerHTML = '❌';
   remove.onclick = getOnRemove([
-    (idx) => ITEM_N_NAME_ID(EQUIPMENT_N_ID(idx)),
-    (idx) => ITEM_N_NOTES_ID(EQUIPMENT_N_ID(idx)),
+    (idx) => NAME_ID(EQUIPMENT_N_ID(idx)),
+    (idx) => NOTES_ID(EQUIPMENT_N_ID(idx)),
   ]);
 
   const legend = document.createElement('legend');
   legend.innerText = (index + 1).toString();
 
-  const nameLabel = document.createElement('label');
-  nameLabel.innerText = 'Name';
+  const nameLabel = makeLabel('Name');
   const name = document.createElement('input');
-  name.name = ITEM_N_NAME_ID(EQUIPMENT_N_ID(index));
-  name.id = ITEM_N_NAME_ID(EQUIPMENT_N_ID(index));
+  name.name = NAME_ID(EQUIPMENT_N_ID(index));
+  name.id = name.name;
   name.required = true;
   name.value = equipment?.name ?? '';
-
   nameLabel.appendChild(name);
-  const notesLabel = document.createElement('label');
-  notesLabel.innerText = 'Notes';
+
+  const notesLabel = makeLabel('Notes');
   const notes = document.createElement('textarea');
-  notes.name = ITEM_N_NOTES_ID(EQUIPMENT_N_ID(index));
-  notes.id = ITEM_N_NOTES_ID(EQUIPMENT_N_ID(index));
-  notesLabel.appendChild(notes);
+  notes.name = NOTES_ID(EQUIPMENT_N_ID(index));
+  notes.id = notes.name;
   notes.value = equipment?.notes ?? '';
+  notesLabel.appendChild(notes);
 
   fieldSet.append(remove, legend, nameLabel, notesLabel);
   list.append(fieldSet);

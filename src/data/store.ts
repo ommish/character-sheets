@@ -10,13 +10,15 @@ export const getStoredCharacterNames = () => {
 
 export const getStoredCharacters = () => {
   const names = getStoredCharacterNames();
-  return names.map((name) => {
-    const character = localStorage.getItem(CHARACTER_KEY(name));
-    if (!character) {
-      throw new Error(`Character data for ${name} not found.`);
-    }
-    return JSON.parse(character) as Character;
-  });
+  return names.map(getStoredCharacter);
+};
+
+export const getStoredCharacter = (name: string) => {
+  const character = localStorage.getItem(CHARACTER_KEY(name));
+  if (!character) {
+    throw new Error(`Character data for ${name} not found.`);
+  }
+  return JSON.parse(character) as Character;
 };
 
 export const storeCharacter = (character: Character) => {

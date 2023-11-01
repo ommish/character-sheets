@@ -22,6 +22,7 @@ code {
 ul,
 ol {
   padding-inline-start: 2rem;
+  margin: 0;
 }
 
 a {
@@ -160,6 +161,9 @@ h6 {
   margin-right: 0.75rem;
   margin-left: 0.75rem;
 }
+.mt-1-5 {
+  margin-top: 0.25rem;
+}
 .mt-1 {
   margin-top: 0.75rem;
 }
@@ -295,4 +299,18 @@ h6 {
 .py-8 {
   padding-top: 6rem;
   padding-bottom: 6rem;
+}
+
+.hidden {
+  display: block;
+  visibility: hidden;
+  overflow: hidden;
+  max-height: 0;
+  max-width: 0;
+  margin: 0 !important;
+}
+
+button {
+  background: #f0f1f4;
+  border: 1px solid black;
 }

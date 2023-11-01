@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { AccordionList } from '../../../components';
+import { AccordionList, Checkbox, UsesTracker } from '../../../components';
 import { useCharacter } from '../../../hooks/useCharacter';
 import { SpellLevel } from '../../../types';
+import { getStoredCharacter, storeCharacter } from '../../../data/store';
 
 const base = {} as Record<SpellLevel, number>;
 
@@ -24,9 +25,10 @@ export const Spells: React.FC = () => {
         <div key={colLevels[0]}>
           {colLevels.map((level) => (
             <div key={level} className="bordered-box mb-1">
-              <div className="label-1">
+              <div className="flex col align-center">
                 <button
                   type="button"
+                  className="label-1"
                   onClick={() => {
                     setToggleAll({
                       ...toggleAll,
@@ -36,32 +38,53 @@ export const Spells: React.FC = () => {
                 >
                   {level === '0' ? 'Cantrips' : `Level ${level}`}
                 </button>
-              </div>
-              <div className="label-1">
-                {level !== '0' && (
-                  <>
-                    {character.spells[level]?.remaining ?? 0} /{' '}
-                    {character.spells[level]?.total ?? 0}
-                  </>
-                )}
+                {character.spells[level]?.total ? (
+                  <UsesTracker
+                    total={character.spells[level]?.total ?? 0}
+                    remaining={character.spells[level]?.remaining ?? 0}
+                    toggleUse={(used) => {
+                      const newCharacter = {
+                        ...getStoredCharacter(character.name),
+                      };
+                      const spells = newCharacter.spells[level];
+                      if (!spells) {
+                        return;
+                      }
+                      const total = spells.total ?? 0;
+                      const remaining = spells.remaining ?? 0;
+                      spells.remaining = used
+                        ? Math.max(0, remaining - 1)
+                        : Math.min(total, remaining + 1);
+                      storeCharacter(newCharacter);
+                    }}
+                  />
+                ) : null}
               </div>
               <AccordionList
                 accordions={
-                  character.spells[level]?.spells.map((spell) => ({
+                  character.spells[level]?.spells.map((spell, i) => ({
                     id: `${level}-${spell.name}`,
                     title: (
                       <div className="mr-1 value-2 flex align-center">
                         {spell.name}
-                        <input
-                          type="checkbox"
-                          aria-disabled
-                          checked={spell.prepared}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                          }}
-                        />
                       </div>
+                    ),
+                    action: (
+                      <Checkbox
+                        ariaLabel="Prepared"
+                        initiallyChecked={!!spell.prepared}
+                        onChange={(e) => {
+                          const newCharacter = {
+                            ...getStoredCharacter(character.name),
+                          };
+                          const spell = newCharacter.spells[level]?.spells[i];
+                          if (!spell) {
+                            return;
+                          }
+                          spell.prepared = e.currentTarget.checked;
+                          storeCharacter(newCharacter);
+                        }}
+                      />
                     ),
                     content: <div className="value-3">{spell.notes}</div>,
                   })) ?? []

@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { ABILITIES, PROFICIENCIES, SKILLS, SPELL_LEVELS } from '../../types';
+import {
+  ABILITIES,
+  CURRENCIES,
+  PROFICIENCIES,
+  SKILLS,
+  SPELL_LEVELS,
+} from '../../types';
 import { useCharacters } from '../../hooks/useCharacters';
 import { Create } from '../Create';
 import { addEquipment } from '../../formUtils/addEquipment';
@@ -36,6 +42,8 @@ export const Edit: React.FC = () => {
       character.subKlass;
     (document.getElementById('background') as HTMLInputElement).value =
       character.background;
+    (document.getElementById('inspiration') as HTMLInputElement).checked =
+      character.inspiration;
     (document.getElementById('speed.feet') as HTMLInputElement).value =
       character.speed.feet.toString();
     (document.getElementById('speed.notes') as HTMLInputElement).value =
@@ -53,8 +61,22 @@ export const Edit: React.FC = () => {
     (document.getElementById('health.max') as HTMLInputElement).value =
       character.health.max.toString();
 
+    (document.getElementById('health.current') as HTMLInputElement).value =
+      character.health.current?.toString() ?? '';
+
+    (document.getElementById('health.temp') as HTMLInputElement).value =
+      character.health.temp?.toString() ?? '';
+
+    (document.getElementById('health.dice') as HTMLInputElement).value =
+      character.health.dice?.toString() ?? '';
+
     (document.getElementById('hitDie') as HTMLInputElement).value =
       character.hitDie;
+
+    CURRENCIES.forEach((cr) => {
+      (document.getElementById(`money.${cr}`) as HTMLInputElement).value =
+        character.money[cr]?.toString() ?? '';
+    });
 
     ABILITIES.forEach((ability) => {
       (
@@ -117,6 +139,11 @@ export const Edit: React.FC = () => {
           (
             document.getElementById(`spells.${level}.total`) as HTMLInputElement
           ).value = spells.total?.toString() ?? '';
+          (
+            document.getElementById(
+              `spells.${level}.remaining`,
+            ) as HTMLInputElement
+          ).value = spells.remaining?.toString() ?? '';
         }
         spells.spells.forEach((spell) => {
           addSpell(level.toString(), spell);

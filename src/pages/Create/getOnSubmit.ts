@@ -4,9 +4,11 @@ import {
   ABILITIES,
   Abilities,
   Ability,
+  CURRENCIES,
   Character,
   DamageType,
   Die,
+  Money,
   PROFICIENCIES,
   Proficiencies,
   SKILLS,
@@ -17,11 +19,22 @@ import {
 import { NavigateFunction } from 'react-router-dom';
 import { getElement } from '../../formUtils/getElement';
 import {
+  ABILITY_ID,
+  ADD_TO_HIT_ID,
+  COUNT_ID,
+  DAMAGE_ID,
+  DIE_ID,
   EQUIPMENT_ID,
   FEATURES_ID,
+  NAME_ID,
+  NOTES_ID,
   PROFICIENCIES_ID,
+  PROFICIENT_ID,
   SPELL_LIST_ID,
+  TYPE_ID,
   WEAPONS_ID,
+  WEAPONS_N_DAMAGE_O_ID,
+  WEAPONS_N_ID,
 } from '../../formUtils/formIds';
 
 export const getOnSubmit =
@@ -29,77 +42,73 @@ export const getOnSubmit =
   (e) => {
     e.preventDefault();
 
-    const campaign = (document.getElementById('campaign') as HTMLInputElement)
-      .value;
+    const campaign = (getElement('campaign') as HTMLInputElement).value;
 
-    const name = (document.getElementById('name') as HTMLInputElement).value;
+    const name = (getElement('name') as HTMLInputElement).value;
 
-    const level = parseInt(
-      (document.getElementById('level') as HTMLInputElement).value,
-    );
+    const level =
+      parseInt((getElement('level') as HTMLInputElement).value) || 1;
 
-    const race = (document.getElementById('race') as HTMLInputElement).value;
+    const race = (getElement('race') as HTMLInputElement).value;
 
-    const klass = (document.getElementById('klass') as HTMLInputElement).value;
+    const klass = (getElement('klass') as HTMLInputElement).value;
 
-    const subKlass = (document.getElementById('subKlass') as HTMLInputElement)
-      .value;
+    const subKlass = (getElement('subKlass') as HTMLInputElement).value;
 
-    const background = (
-      document.getElementById('background') as HTMLInputElement
-    ).value;
+    const background = (getElement('background') as HTMLInputElement).value;
+
+    const inspiration = (getElement('inspiration') as HTMLInputElement).checked;
 
     const speed = {
-      feet: parseInt(
-        (document.getElementById('speed.feet') as HTMLInputElement).value,
-      ),
-      notes: (document.getElementById('speed.notes') as HTMLInputElement).value,
+      feet: parseInt((getElement('speed.feet') as HTMLInputElement).value) || 0,
+      notes: (getElement('speed.notes') as HTMLInputElement).value,
     };
 
     const armorClass = {
-      ac: parseInt(
-        (document.getElementById('armorClass.ac') as HTMLInputElement).value,
-      ),
-      notes: (document.getElementById('armorClass.notes') as HTMLInputElement)
-        .value,
+      ac:
+        parseInt((getElement('armorClass.ac') as HTMLInputElement).value) || 0,
+      notes: (getElement('armorClass.notes') as HTMLInputElement).value,
     };
 
     const initiative = {
-      additionalBonus: parseInt(
-        (
-          document.getElementById(
-            'initiative.additionalBonus',
-          ) as HTMLInputElement
-        ).value,
-      ),
-      notes: (document.getElementById('initiative.notes') as HTMLInputElement)
-        .value,
+      additionalBonus:
+        parseInt(
+          (getElement('initiative.additionalBonus') as HTMLInputElement).value,
+        ) || 0,
+      notes: (getElement('initiative.notes') as HTMLInputElement).value,
     };
 
     const health = {
-      max: parseInt(
-        (document.getElementById('health.max') as HTMLInputElement).value,
-      ),
-      current: undefined,
-      temp: 0,
-      dice: undefined,
+      max: parseInt((getElement('health.max') as HTMLInputElement).value) || 0,
+      current:
+        parseInt((getElement('health.current') as HTMLInputElement).value) || 0,
+      temp:
+        parseInt((getElement('health.temp') as HTMLInputElement).value) || null,
+      dice:
+        parseInt((getElement('health.dice') as HTMLInputElement).value) || null,
     };
 
-    const hitDie = (document.getElementById('hitDie') as HTMLInputElement)
-      .value as Die;
+    const money = CURRENCIES.reduce<Money>(
+      (acc, cr) => ({
+        ...acc,
+        [cr]:
+          parseInt((getElement(`money.${cr}`) as HTMLInputElement).value) ||
+          null,
+      }),
+      {} as Money,
+    );
+
+    const hitDie = (getElement('hitDie') as HTMLInputElement).value as Die;
 
     const statusEffects: StatusEffect[] = [];
 
     const abilityScores = ABILITIES.reduce<Abilities>(
       (acc, ability) => ({
         ...acc,
-        [ability]: parseInt(
-          (
-            document.getElementById(
-              `abilityScores.${ability}`,
-            ) as HTMLInputElement
-          ).value,
-        ),
+        [ability]:
+          parseInt(
+            (getElement(`abilityScores.${ability}`) as HTMLInputElement).value,
+          ) || 0,
       }),
       {} as Abilities,
     );
@@ -109,21 +118,18 @@ export const getOnSubmit =
         ...acc,
         [skill]: {
           proficient: (
-            document.getElementById(
-              `skills.${skill}.proficient`,
-            ) as HTMLInputElement
+            getElement(`skills.${skill}.proficient`) as HTMLInputElement
           ).checked,
           additionalBonus:
             parseInt(
               (
-                document.getElementById(
+                getElement(
                   `skills.${skill}.additionalBonus`,
                 ) as HTMLInputElement
               ).value,
             ) || 0,
-          notes: (
-            document.getElementById(`skills.${skill}.notes`) as HTMLInputElement
-          ).value,
+          notes: (getElement(`skills.${skill}.notes`) as HTMLInputElement)
+            .value,
         },
       }),
       {},
@@ -134,23 +140,18 @@ export const getOnSubmit =
         ...acc,
         [ability]: {
           proficient: (
-            document.getElementById(
-              `saves.${ability}.proficient`,
-            ) as HTMLInputElement
+            getElement(`saves.${ability}.proficient`) as HTMLInputElement
           ).checked,
           additionalBonus:
             parseInt(
               (
-                document.getElementById(
+                getElement(
                   `saves.${ability}.additionalBonus`,
                 ) as HTMLInputElement
               ).value,
             ) || 0,
-          notes: (
-            document.getElementById(
-              `saves.${ability}.notes`,
-            ) as HTMLInputElement
-          ).value,
+          notes: (getElement(`saves.${ability}.notes`) as HTMLInputElement)
+            .value,
         },
       }),
       {},
@@ -170,12 +171,12 @@ export const getOnSubmit =
         .fill(null)
         .map((_, i) => ({
           name: (
-            document.getElementById(
+            getElement(
               `proficiencies.${proficiency}.${i}.name`,
             ) as HTMLInputElement
           ).value,
           notes: (
-            document.getElementById(
+            getElement(
               `proficiencies.${proficiency}.${i}.notes`,
             ) as HTMLInputElement
           ).value,
@@ -185,85 +186,84 @@ export const getOnSubmit =
     const equipment = new Array(getElement(EQUIPMENT_ID()).children.length - 1)
       .fill(null)
       .map((_, i) => ({
-        name: (
-          document.getElementById(`equipment.${i}.name`) as HTMLInputElement
-        ).value,
-        notes: (
-          document.getElementById(`equipment.${i}.notes`) as HTMLInputElement
-        ).value,
+        name: (getElement(`equipment.${i}.name`) as HTMLInputElement).value,
+        notes: (getElement(`equipment.${i}.notes`) as HTMLInputElement).value,
       }));
 
     const features = new Array(getElement(FEATURES_ID()).children.length - 1)
       .fill(null)
-      .map((_, i) => ({
-        name: (
-          document.getElementById(`features.${i}.name`) as HTMLInputElement
-        ).value,
-        description: (
-          document.getElementById(
-            `features.${i}.description`,
-          ) as HTMLInputElement
-        ).value,
-        remainingUses: null,
-      }));
-    console.log('features', features);
+      .map((_, i) => {
+        const totalUses = parseInt(
+          (getElement(`features.${i}.uses.total`) as HTMLInputElement).value,
+        );
+        const remainingUses = parseInt(
+          (getElement(`features.${i}.uses.remaining`) as HTMLInputElement)
+            .value,
+        );
+        return {
+          name: (getElement(`features.${i}.name`) as HTMLInputElement).value,
+          description: (
+            getElement(`features.${i}.description`) as HTMLInputElement
+          ).value,
+          uses: totalUses
+            ? {
+                total: totalUses,
+                remaining: remainingUses || totalUses,
+              }
+            : null,
+        };
+      });
 
     const weapons = new Array(getElement(WEAPONS_ID()).children.length - 1)
       .fill(null)
       .map((_, i) => ({
-        name: (document.getElementById(`weapons.${i}.name`) as HTMLInputElement)
-          .value,
+        name: (getElement(NAME_ID(WEAPONS_N_ID(i))) as HTMLInputElement).value,
         proficient: (
-          document.getElementById(`weapons.${i}.proficient`) as HTMLInputElement
+          getElement(PROFICIENT_ID(WEAPONS_N_ID(i))) as HTMLInputElement
         ).checked,
-        ability: (
-          document.getElementById(`weapons.${i}.ability`) as HTMLInputElement
-        ).value as Ability,
-        damage: {
-          die: (
-            document.getElementById(
-              `weapons.${i}.damage.die`,
-            ) as HTMLInputElement
-          ).value as Die,
-          count:
-            parseInt(
-              (
-                document.getElementById(
-                  `weapons.${i}.damage.count`,
-                ) as HTMLInputElement
-              ).value,
-            ) || 0,
-          type: (
-            document.getElementById(
-              `weapons.${i}.damage.type`,
-            ) as HTMLInputElement
-          ).value as DamageType,
-        },
-        additionalToHit:
-          parseInt(
-            (
-              document.getElementById(
-                `weapons.${i}.additionalToHit`,
+        ability: (getElement(ABILITY_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
+          .value as Ability,
+        damage: new Array(
+          getElement(DAMAGE_ID(WEAPONS_N_ID(i))).children.length - 1,
+        )
+          .fill(null)
+          .map((_, j) => ({
+            die: (
+              getElement(
+                DIE_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
               ) as HTMLInputElement
-            ).value,
-          ) || 0,
+            ).value as Die,
+            count:
+              parseInt(
+                (
+                  getElement(
+                    COUNT_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
+                  ) as HTMLInputElement
+                ).value,
+              ) || 0,
+            type: (
+              getElement(
+                TYPE_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
+              ) as HTMLInputElement
+            ).value as DamageType,
+          })),
         additionalDamage:
           parseInt(
-            (
-              document.getElementById(
-                `weapons.${i}.additionalDamage`,
-              ) as HTMLInputElement
-            ).value,
+            (getElement(`weapons.${i}.additionalDamage`) as HTMLInputElement)
+              .value,
           ) || 0,
-        remainingUses: null,
-        notes: (
-          document.getElementById(`weapons.${i}.notes`) as HTMLInputElement
-        ).value,
+        additionalToHit:
+          parseInt(
+            (getElement(ADD_TO_HIT_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
+              .value,
+          ) || 0,
+        totalUses: null,
+        notes: (getElement(NOTES_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
+          .value,
       }));
 
     const dc = {
-      ability: (document.getElementById('dc.ability') as HTMLInputElement)
-        .value as Ability,
+      ability: (getElement('dc.ability') as HTMLInputElement).value as Ability,
     };
     const spells: Spells = {};
     let showSpells = false;
@@ -273,31 +273,31 @@ export const getOnSubmit =
       ).fill(null);
       if (spellsList.length) {
         showSpells = true;
+        const total =
+          level === 0
+            ? null
+            : parseInt(
+                (getElement(`spells.${level}.total`) as HTMLInputElement).value,
+              ) || 0;
         spells[level] = {
-          total:
-            level === 0
-              ? null
-              : parseInt(
-                  (
-                    document.getElementById(
-                      `spells.${level}.total`,
-                    ) as HTMLInputElement
-                  ).value,
-                ),
-          remaining: null,
+          total,
+          remaining: total
+            ? parseInt(
+                (getElement(`spells.${level}.remaining`) as HTMLInputElement)
+                  .value,
+              ) || total
+            : null,
           spells: spellsList.map((_, i) => ({
             name: (
-              document.getElementById(
-                `spells.${level}.spells.${i}.name`,
-              ) as HTMLInputElement
+              getElement(`spells.${level}.spells.${i}.name`) as HTMLInputElement
             ).value,
             notes: (
-              document.getElementById(
+              getElement(
                 `spells.${level}.spells.${i}.notes`,
               ) as HTMLInputElement
             ).value,
             prepared: (
-              document.getElementById(
+              getElement(
                 `spells.${level}.spells.${i}.prepared`,
               ) as HTMLInputElement
             ).checked,
@@ -313,7 +313,7 @@ export const getOnSubmit =
       race,
       klass,
       subKlass,
-      inspiration: false,
+      inspiration,
       background,
       abilityScores,
       statusEffects,
@@ -332,31 +332,13 @@ export const getOnSubmit =
         successes: 0,
         failures: 0,
       },
-      money: {
-        copper: null,
-        silver: null,
-        gold: null,
-        platinum: null,
-      },
+      money,
       showSpells,
       dc,
       spells,
     };
 
     storeCharacter(character);
-    const json = URL.createObjectURL(
-      new Blob([JSON.stringify(character, null, 2)], {
-        type: 'application/json',
-      }),
-    );
-
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = json;
-    a.download = `${character.name}---${new Date().toDateString()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(json);
 
     navigate(`/${character.name}`);
   };

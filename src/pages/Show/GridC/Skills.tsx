@@ -13,7 +13,7 @@ export const Skills: React.FC = () => {
       <div className="proficiencies-grid">
         {SKILLS.map((sk) => (
           <React.Fragment key={sk}>
-            <div>
+            <div className="flex align-center">
               {character.skills[sk].proficient ? (
                 <CheckCircleFill className="mr-1" />
               ) : (
@@ -41,7 +41,7 @@ export const Skills: React.FC = () => {
           </React.Fragment>
         ))}
       </div>
-      <div className="label-1 mt-2">Skills</div>
+      <div className="label-1 mt-1">Skills</div>
     </div>
   );
 };

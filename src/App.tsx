@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import './App.scss';
-import { Create, Edit, List, Show } from './pages';
 import logo from './logo.svg';
+import { Create, Edit, List, Show } from './pages';
 
 const App: React.FC = () => {
   return (

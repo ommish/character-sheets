@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { deleteCharacter, storeCharacter } from '../../data/store';
 import { Character } from '../../types';
 import { useCharacters } from '../../hooks/useCharacters';
+import { exportCharacter } from '../../data/export';
 
 export const List: React.FC = () => {
   const navigate = useNavigate();
@@ -11,23 +12,34 @@ export const List: React.FC = () => {
     <main>
       <h2 className="pl-2">Characters</h2>
       <ul className="mb-2">
-        {characters.map(({ name }) => (
-          <li key={name}>
-            {name}
+        {characters.map((character) => (
+          <li key={character.name} className="mb-1">
+            {character.name}
             <span className="ml-2">
-              <Link to={`/${name}`}>View</Link>
+              <Link to={`/${character.name}`}>View</Link>
             </span>
             <span className="ml-2">
-              <Link to={`/${name}/edit`}>Edit</Link>
+              <Link to={`/${character.name}/edit`}>Edit</Link>
             </span>
             <button
-              className="ml-4"
               type="button"
+              className="ml-2"
+              onClick={() => {
+                exportCharacter(character);
+              }}
+            >
+              Export
+            </button>
+            <button
+              type="button"
+              className="ml-4"
               onClick={() => {
                 if (
-                  window.confirm(`Are you sure you want to delete ${name}?`)
+                  window.confirm(
+                    `Are you sure you want to delete ${character.name}?`,
+                  )
                 ) {
-                  deleteCharacter(name);
+                  deleteCharacter(character.name);
                   window.location.reload();
                 }
               }}
@@ -61,7 +73,7 @@ export const List: React.FC = () => {
                 const character = JSON.parse(result) as Character;
                 character.name = character.name.split('---')[0];
                 storeCharacter(character);
-                navigate(`/${character.name}/edit`);
+                navigate(`/${character.name}`);
               }
             };
             reader.readAsText(file);
