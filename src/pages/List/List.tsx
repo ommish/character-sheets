@@ -10,7 +10,7 @@ export const List: React.FC = () => {
   const characters = useCharacters();
   return (
     <main>
-      <h2 className="pl-2">Characters</h2>
+      <h2 className="pl-2 my-1">Characters</h2>
       <ul className="mb-2">
         {characters.map((character) => (
           <li key={character.name} className="mb-1">
