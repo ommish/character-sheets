@@ -257,7 +257,6 @@ export const getOnSubmit =
             (getElement(ADD_TO_HIT_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
               .value,
           ) || 0,
-        totalUses: null,
         notes: (getElement(NOTES_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
           .value,
       }));

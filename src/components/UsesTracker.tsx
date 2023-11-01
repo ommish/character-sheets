@@ -23,7 +23,6 @@ export const UsesTracker: React.FC<{
             const newUsed = [...uses];
             newUsed[i] = !newUsed[i];
             setUses(newUsed);
-            console.log('newUsed[i]', newUsed[i]);
             toggleUse(newUsed[i]);
           }}
         />

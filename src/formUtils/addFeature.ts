@@ -51,6 +51,8 @@ export const addFeature = (feature?: Feature) => {
   totalUses.name = TOTAL_USES_ID(FEATURES_N_ID(index));
   totalUses.id = totalUses.name;
   totalUses.type = 'number';
+  totalUses.step = '1';
+  totalUses.min = '0';
   totalUses.value = feature?.uses?.total.toString() ?? '';
   totalUsesLabel.appendChild(totalUses);
 
