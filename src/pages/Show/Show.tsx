@@ -23,7 +23,7 @@ export const Show: React.FC = () => {
   }
   return (
     <main className="character-show">
-      <div className="sheet-actions">
+      <div className="sheet-actions hide-on-print">
         <Link to={`/${name}/edit`} className="mr-1">
           Edit
         </Link>

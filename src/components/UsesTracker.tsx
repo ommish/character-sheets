@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { newArray } from '../formUtils/newArray';
 import { UseCircle } from './UseCircle';
 
 export const UsesTracker: React.FC<{
@@ -8,9 +9,7 @@ export const UsesTracker: React.FC<{
   size?: number;
 }> = ({ total, remaining, toggleUse, size }) => {
   const [uses, setUses] = useState(
-    new Array(total)
-      .fill(null)
-      .map((_, i) => (total - i > remaining ? true : false)),
+    newArray(total).map((_, i) => (total - i > remaining ? true : false)),
   );
   return (
     <div className="uses-tracker">

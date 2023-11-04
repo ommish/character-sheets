@@ -73,6 +73,14 @@ export const Edit: React.FC = () => {
     (document.getElementById('hitDie') as HTMLInputElement).value =
       character.hitDie;
 
+    character.statusEffects.forEach((effect) => {
+      (
+        document.getElementById(
+          `statusEffects.${effect}.option`,
+        ) as HTMLOptionElement
+      ).selected = true;
+    });
+
     CURRENCIES.forEach((cr) => {
       (document.getElementById(`money.${cr}`) as HTMLInputElement).value =
         character.money[cr]?.toString() ?? '';

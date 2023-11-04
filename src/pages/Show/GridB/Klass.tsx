@@ -6,7 +6,7 @@ export const Klass: React.FC = () => {
   return (
     <div className="w-3-8">
       <div className="border-b value-1">
-        {character.klass} ({character.subKlass})
+        {character.klass} {character.subKlass && `(${character.subKlass})`}
       </div>
       <div className="label-2">Class</div>
     </div>

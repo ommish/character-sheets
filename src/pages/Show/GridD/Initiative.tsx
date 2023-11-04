@@ -15,7 +15,7 @@ export const Initiative: React.FC = () => {
           }
         />
       </div>
-      <div className="label-1 mt-1-5">
+      <div className="label-1 mt-0-5">
         Initiative
         <Info title={character.initiative.notes} />
       </div>

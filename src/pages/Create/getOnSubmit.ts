@@ -1,23 +1,6 @@
 import { FormEventHandler } from 'react';
-import { storeCharacter } from '../../data/store';
-import {
-  ABILITIES,
-  Abilities,
-  Ability,
-  CURRENCIES,
-  Character,
-  DamageType,
-  Die,
-  Money,
-  PROFICIENCIES,
-  Proficiencies,
-  SKILLS,
-  SPELL_LEVELS,
-  Spells,
-  StatusEffect,
-} from '../../types';
 import { NavigateFunction } from 'react-router-dom';
-import { getElement } from '../../formUtils/getElement';
+import { storeCharacter } from '../../data/store';
 import {
   ABILITY_ID,
   ADD_TO_HIT_ID,
@@ -36,6 +19,24 @@ import {
   WEAPONS_N_DAMAGE_O_ID,
   WEAPONS_N_ID,
 } from '../../formUtils/formIds';
+import { getElement } from '../../formUtils/getElement';
+import { newArray } from '../../formUtils/newArray';
+import {
+  ABILITIES,
+  Abilities,
+  Ability,
+  CURRENCIES,
+  Character,
+  DamageType,
+  Die,
+  Money,
+  PROFICIENCIES,
+  Proficiencies,
+  SKILLS,
+  SPELL_LEVELS,
+  Spells,
+  StatusEffect,
+} from '../../types';
 
 export const getOnSubmit =
   (navigate: NavigateFunction): FormEventHandler =>
@@ -78,6 +79,13 @@ export const getOnSubmit =
       notes: (getElement('initiative.notes') as HTMLInputElement).value,
     };
 
+    const statusEffectsOptions = (
+      getElement('statusEffects') as HTMLSelectElement
+    ).selectedOptions;
+    const statusEffects = newArray(statusEffectsOptions.length).map(
+      (_, i) => statusEffectsOptions.item(i)?.value as StatusEffect,
+    );
+
     const health = {
       max: parseInt((getElement('health.max') as HTMLInputElement).value) || 0,
       current:
@@ -99,8 +107,6 @@ export const getOnSubmit =
     );
 
     const hitDie = (getElement('hitDie') as HTMLInputElement).value as Die;
-
-    const statusEffects: StatusEffect[] = [];
 
     const abilityScores = ABILITIES.reduce<Abilities>(
       (acc, ability) => ({
@@ -165,88 +171,78 @@ export const getOnSubmit =
       {} as Proficiencies,
     );
     PROFICIENCIES.forEach((proficiency) => {
-      proficiencies[proficiency] = new Array(
+      proficiencies[proficiency] = newArray(
         getElement(PROFICIENCIES_ID(proficiency)).children.length - 1,
-      )
-        .fill(null)
-        .map((_, i) => ({
-          name: (
-            getElement(
-              `proficiencies.${proficiency}.${i}.name`,
-            ) as HTMLInputElement
-          ).value,
-          notes: (
-            getElement(
-              `proficiencies.${proficiency}.${i}.notes`,
-            ) as HTMLInputElement
-          ).value,
-        }));
+      ).map((_, i) => ({
+        name: (
+          getElement(
+            `proficiencies.${proficiency}.${i}.name`,
+          ) as HTMLInputElement
+        ).value,
+        notes: (
+          getElement(
+            `proficiencies.${proficiency}.${i}.notes`,
+          ) as HTMLInputElement
+        ).value,
+      }));
     });
 
-    const equipment = new Array(getElement(EQUIPMENT_ID()).children.length - 1)
-      .fill(null)
-      .map((_, i) => ({
-        name: (getElement(`equipment.${i}.name`) as HTMLInputElement).value,
-        notes: (getElement(`equipment.${i}.notes`) as HTMLInputElement).value,
-      }));
+    const equipment = newArray(
+      getElement(EQUIPMENT_ID()).children.length - 1,
+    ).map((_, i) => ({
+      name: (getElement(`equipment.${i}.name`) as HTMLInputElement).value,
+      notes: (getElement(`equipment.${i}.notes`) as HTMLInputElement).value,
+    }));
 
-    const features = new Array(getElement(FEATURES_ID()).children.length - 1)
-      .fill(null)
-      .map((_, i) => {
-        const totalUses = parseInt(
-          (getElement(`features.${i}.uses.total`) as HTMLInputElement).value,
-        );
-        const remainingUses = parseInt(
-          (getElement(`features.${i}.uses.remaining`) as HTMLInputElement)
-            .value,
-        );
-        return {
-          name: (getElement(`features.${i}.name`) as HTMLInputElement).value,
-          description: (
-            getElement(`features.${i}.description`) as HTMLInputElement
-          ).value,
-          uses: totalUses
-            ? {
-                total: totalUses,
-                remaining: remainingUses || totalUses,
-              }
-            : null,
-        };
-      });
+    const features = newArray(
+      getElement(FEATURES_ID()).children.length - 1,
+    ).map((_, i) => {
+      const totalUses = parseInt(
+        (getElement(`features.${i}.uses.total`) as HTMLInputElement).value,
+      );
+      const remainingUses = parseInt(
+        (getElement(`features.${i}.uses.remaining`) as HTMLInputElement).value,
+      );
+      return {
+        name: (getElement(`features.${i}.name`) as HTMLInputElement).value,
+        description: (
+          getElement(`features.${i}.description`) as HTMLInputElement
+        ).value,
+        uses: totalUses
+          ? {
+              total: totalUses,
+              remaining: remainingUses || totalUses,
+            }
+          : null,
+      };
+    });
 
-    const weapons = new Array(getElement(WEAPONS_ID()).children.length - 1)
-      .fill(null)
-      .map((_, i) => ({
+    const weapons = newArray(getElement(WEAPONS_ID()).children.length - 1).map(
+      (_, i) => ({
         name: (getElement(NAME_ID(WEAPONS_N_ID(i))) as HTMLInputElement).value,
         proficient: (
           getElement(PROFICIENT_ID(WEAPONS_N_ID(i))) as HTMLInputElement
         ).checked,
         ability: (getElement(ABILITY_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
           .value as Ability,
-        damage: new Array(
+        damage: newArray(
           getElement(DAMAGE_ID(WEAPONS_N_ID(i))).children.length - 1,
-        )
-          .fill(null)
-          .map((_, j) => ({
-            die: (
-              getElement(
-                DIE_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
-              ) as HTMLInputElement
-            ).value as Die,
-            count:
-              parseInt(
-                (
-                  getElement(
-                    COUNT_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
-                  ) as HTMLInputElement
-                ).value,
-              ) || 0,
-            type: (
-              getElement(
-                TYPE_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
-              ) as HTMLInputElement
-            ).value as DamageType,
-          })),
+        ).map((_, j) => ({
+          die: (
+            getElement(DIE_ID(WEAPONS_N_DAMAGE_O_ID(i, j))) as HTMLInputElement
+          ).value as Die,
+          count:
+            parseInt(
+              (
+                getElement(
+                  COUNT_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
+                ) as HTMLInputElement
+              ).value,
+            ) || 0,
+          type: (
+            getElement(TYPE_ID(WEAPONS_N_DAMAGE_O_ID(i, j))) as HTMLInputElement
+          ).value as DamageType,
+        })),
         additionalDamage:
           parseInt(
             (getElement(`weapons.${i}.additionalDamage`) as HTMLInputElement)
@@ -259,7 +255,8 @@ export const getOnSubmit =
           ) || 0,
         notes: (getElement(NOTES_ID(WEAPONS_N_ID(i))) as HTMLInputElement)
           .value,
-      }));
+      }),
+    );
 
     const dc = {
       ability: (getElement('dc.ability') as HTMLInputElement).value as Ability,
@@ -267,9 +264,9 @@ export const getOnSubmit =
     const spells: Spells = {};
     let showSpells = false;
     SPELL_LEVELS.forEach((level) => {
-      const spellsList = new Array(
+      const spellsList = newArray(
         getElement(SPELL_LIST_ID(level.toString())).children.length - 1,
-      ).fill(null);
+      );
       if (spellsList.length) {
         showSpells = true;
         const total =

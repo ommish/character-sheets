@@ -14,8 +14,6 @@ export const getOnRemove =
     const fieldEl = getParent(e.currentTarget as HTMLButtonElement);
     const listEl = getParent(fieldEl);
     listEl.childNodes.forEach((node, i) => {
-      console.log('i', i);
-      console.log('node', node);
       if (node === fieldEl) {
         idx = i;
       }

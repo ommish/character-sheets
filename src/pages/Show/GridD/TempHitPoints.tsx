@@ -26,7 +26,7 @@ export const TempHitPoints: React.FC = () => {
           }}
         />
       </div>
-      <div className="label-1 mt-1-5">Temporary Hit Points</div>
+      <div className="label-1 mt-0-5">Temporary Hit Points</div>
     </div>
   );
 };

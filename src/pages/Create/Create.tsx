@@ -1,7 +1,14 @@
 import { capitalize, startCase } from 'lodash';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ABILITIES, CURRENCIES, DICE, SKILLS } from '../../types';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { newArray } from '../../formUtils/newArray';
+import {
+  ABILITIES,
+  CURRENCIES,
+  DICE,
+  SKILLS,
+  STATUS_EFFECTS,
+} from '../../types';
 import './Create.scss';
 import { Equipment } from './Equipment';
 import { Features } from './Features';
@@ -9,7 +16,6 @@ import { Proficiencies } from './Proficiencies';
 import { Spells } from './Spells';
 import { Weapons } from './Weapons';
 import { getOnSubmit } from './getOnSubmit';
-import { Link } from 'react-router-dom';
 
 export const Create: React.FC = () => {
   const navigate = useNavigate();
@@ -62,6 +68,16 @@ export const Create: React.FC = () => {
             <label className="hidden">
               <span>Inspiration</span>
               <input type="checkbox" name="inspiration" id="inspiration" />
+            </label>
+            <label>
+              <span>Status Effects</span>
+              <select name="statusEffects" id="statusEffects" multiple>
+                {STATUS_EFFECTS.map((ef) => (
+                  <option key={ef} id={`statusEffects.${ef}.option`} value={ef}>
+                    {ef}
+                  </option>
+                ))}
+              </select>
             </label>
           </div>
           <div className="grid-b">
@@ -279,7 +295,7 @@ export const Create: React.FC = () => {
               ))}
             </select>
           </label>
-          {new Array(10).fill(null).map((_, i) => (
+          {newArray(10).map((_, i) => (
             <Spells key={i.toString()} level={i.toString()} />
           ))}
         </form>

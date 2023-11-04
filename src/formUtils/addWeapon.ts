@@ -26,7 +26,7 @@ const addDamage = (n: number, damage?: WeaponDamage) => {
   const fieldSet = document.createElement('fieldset');
 
   const legend = document.createElement('legend');
-  legend.innerText = (index + 1).toString();
+  legend.innerText = `${n + 1}.${index + 1}`;
 
   const remove = document.createElement('button');
   remove.type = 'button';
