@@ -74,7 +74,7 @@ export const getOnSubmit =
       additionalBonus:
         parseInt(
           (getElement('initiative.additionalBonus') as HTMLInputElement).value,
-        ) || 0,
+        ) || null,
       notes: (getElement('initiative.notes') as HTMLInputElement).value,
     };
 

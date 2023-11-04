@@ -12,9 +12,15 @@
     }
     > fieldset {
       margin: 32px 16px;
+      > legend {
+        position: sticky;
+        top: 0;
+        background-color: white;
+      }
     }
     label {
       margin: 12px;
+      display: inline-flex;
       & > span {
         margin-right: 6px;
       }
@@ -24,6 +30,9 @@
     }
     fieldset > label {
       font-weight: 600;
+    }
+    textarea {
+      min-width: 250px;
     }
   }
 
@@ -62,6 +71,28 @@
   .add {
     margin-bottom: 16px;
     margin-left: 16px;
+  }
+
+  .skills {
+    background-color: azure;
+  }
+  .saving-throws{
+    background-color: cornsilk;
+  }
+  .weapons{
+    background-color: lightpink;
+  }
+  .proficiencies{
+    background-color: navajowhite;
+  }
+  .weapons{
+    background-color: honeydew;
+  }
+  .equipment{
+    background-color: gainsboro;
+  }
+  .features{
+    background-color: lavenderblush;
   }
 
 }

@@ -1,4 +1,4 @@
-export const DICE = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'] as const;
+export const DICE = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'] as const;
 export type Die = (typeof DICE)[number];
 
 export const PROFIENCY_BONUSES: Record<number, number> = {
@@ -67,7 +67,7 @@ export type Saves = Record<Ability, SaveBlock>;
 export type ArmorType = 'heavy' | 'medium' | 'light';
 
 export interface Initiative {
-  additionalBonus: number;
+  additionalBonus: number | null;
   notes?: string;
 }
 

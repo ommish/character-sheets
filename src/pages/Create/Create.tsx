@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import { capitalize, startCase } from 'lodash';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ABILITIES, CURRENCIES, DICE, SKILLS } from '../../types';
@@ -92,7 +92,6 @@ export const Create: React.FC = () => {
                   id="initiative.additionalBonus"
                   type="number"
                   step="1"
-                  required
                 />
               </label>
               <label>
@@ -202,7 +201,7 @@ export const Create: React.FC = () => {
               </label>
             ))}
           </fieldset>
-          <fieldset>
+          <fieldset className="saving-throws">
             <legend>Saving Throws</legend>
             {ABILITIES.map((ability) => (
               <fieldset key={ability}>
@@ -234,11 +233,11 @@ export const Create: React.FC = () => {
               </fieldset>
             ))}
           </fieldset>
-          <fieldset>
+          <fieldset className="skills">
             <legend>Skills</legend>
             {SKILLS.map((skill) => (
               <fieldset key={skill}>
-                <legend>{capitalize(skill)}</legend>
+                <legend>{startCase(skill)}</legend>
                 <label>
                   <span>Proficient</span>
                   <input

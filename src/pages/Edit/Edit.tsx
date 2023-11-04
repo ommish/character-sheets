@@ -54,7 +54,7 @@ export const Edit: React.FC = () => {
       character.armorClass.notes ?? '';
     (
       document.getElementById('initiative.additionalBonus') as HTMLInputElement
-    ).value = character.initiative.additionalBonus.toString();
+    ).value = character.initiative.additionalBonus?.toString() ?? '';
     (document.getElementById('initiative.notes') as HTMLInputElement).value =
       character.initiative.notes ?? '';
 

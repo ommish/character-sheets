@@ -39,6 +39,7 @@ export const addSpell = (level: string, spell?: Spell) => {
   const notes = document.createElement('textarea');
   notes.name = NOTES_ID(SPELL_LIST_N_ID(level, index));
   notes.id = notes.name;
+  notes.rows = 4;
   notes.value = spell?.notes ?? '';
   notesLabel.appendChild(notes);
 

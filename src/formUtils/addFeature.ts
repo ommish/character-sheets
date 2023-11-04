@@ -39,6 +39,7 @@ export const addFeature = (feature?: Feature) => {
   const description = document.createElement('textarea');
   description.name = DESCRIPTION_ID(FEATURES_N_ID(index));
   description.id = description.name;
+  description.rows = 4;
   description.value = feature?.description ?? '';
   descriptionLabel.appendChild(description);
 

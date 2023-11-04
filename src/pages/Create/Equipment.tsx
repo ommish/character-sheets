@@ -3,12 +3,13 @@ import { addEquipment } from '../../formUtils/addEquipment';
 
 export const Equipment: React.FC = () => {
   return (
-    <div>
-      <fieldset id="equipment">
+    <>
+      <fieldset className="equipment" id="equipment">
         <legend>Items</legend>
       </fieldset>
       <div className="add">
         <button
+          className="equipment"
           type="button"
           onClick={() => {
             addEquipment();
@@ -17,6 +18,6 @@ export const Equipment: React.FC = () => {
           Add Item
         </button>
       </div>
-    </div>
+    </>
   );
 };

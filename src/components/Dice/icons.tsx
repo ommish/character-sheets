@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export const d4 = (color: string, size?: string): ReactNode => (
+const d4 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -18,7 +18,7 @@ export const d4 = (color: string, size?: string): ReactNode => (
   </svg>
 );
 
-export const d6 = (color: string, size?: string): ReactNode => (
+const d6 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -40,7 +40,7 @@ export const d6 = (color: string, size?: string): ReactNode => (
   </svg>
 );
 
-export const d8 = (color: string, size?: string): ReactNode => (
+const d8 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -63,7 +63,7 @@ export const d8 = (color: string, size?: string): ReactNode => (
   </svg>
 );
 
-export const d10 = (color: string, size?: string): ReactNode => (
+const d10 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -91,7 +91,7 @@ export const d10 = (color: string, size?: string): ReactNode => (
   </svg>
 );
 
-export const d12 = (color: string, size?: string): ReactNode => (
+const d12 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -109,7 +109,7 @@ export const d12 = (color: string, size?: string): ReactNode => (
   </svg>
 );
 
-export const d20 = (color: string, size?: string): ReactNode => (
+const d20 = (color: string, size?: string): ReactNode => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -126,3 +126,13 @@ export const d20 = (color: string, size?: string): ReactNode => (
     />
   </svg>
 );
+
+export const icons = {
+  d4,
+  d6,
+  d8,
+  d10,
+  d12,
+  d20,
+  d100: d10,
+};

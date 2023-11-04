@@ -10,7 +10,8 @@ export const Initiative: React.FC = () => {
       <div className="value-1">
         <SignedNumber
           number={
-            character.modifiers.dex + character.initiative.additionalBonus
+            character.modifiers.dex +
+            (character.initiative.additionalBonus ?? 0)
           }
         />
       </div>

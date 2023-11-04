@@ -5,15 +5,16 @@ import { PROFICIENCIES } from '../../types';
 
 export const Proficiencies: React.FC = () => {
   return (
-    <fieldset>
+    <fieldset className="proficiencies">
       <legend>Proficiencies</legend>
       {PROFICIENCIES.map((proficiency) => (
-        <div key={proficiency}>
+        <React.Fragment key={proficiency}>
           <fieldset id={`proficiencies.${proficiency}`}>
             <legend>{capitalize(proficiency)}</legend>
           </fieldset>
           <div className="add">
             <button
+              className="proficiencies"
               type="button"
               onClick={() => {
                 addProficiency(proficiency);
@@ -22,7 +23,7 @@ export const Proficiencies: React.FC = () => {
               Add {proficiency} proficiency
             </button>
           </div>
-        </div>
+        </React.Fragment>
       ))}
     </fieldset>
   );

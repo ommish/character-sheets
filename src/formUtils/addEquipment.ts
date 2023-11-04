@@ -32,6 +32,7 @@ export const addEquipment = (equipment?: Item) => {
   const notes = document.createElement('textarea');
   notes.name = NOTES_ID(EQUIPMENT_N_ID(index));
   notes.id = notes.name;
+  notes.rows = 4;
   notes.value = equipment?.notes ?? '';
   notesLabel.appendChild(notes);
 

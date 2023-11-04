@@ -3,12 +3,13 @@ import { addFeature } from '../../formUtils/addFeature';
 
 export const Features: React.FC = () => {
   return (
-    <div>
-      <fieldset id="features">
+    <>
+      <fieldset className="features" id="features">
         <legend>Features</legend>
       </fieldset>
       <div className="add">
         <button
+          className="features"
           type="button"
           onClick={() => {
             addFeature();
@@ -17,6 +18,6 @@ export const Features: React.FC = () => {
           Add Feature
         </button>
       </div>
-    </div>
+    </>
   );
 };

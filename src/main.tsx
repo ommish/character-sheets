@@ -1,6 +1,6 @@
 import FontFaceObserver from 'fontfaceobserver';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import 'typeface-open-sans';
 import App from './App.tsx';
 import './index.scss';
@@ -13,7 +13,7 @@ observer
     const root = document.getElementById('root');
     if (root) {
       ReactDOM.createRoot(root).render(
-        <BrowserRouter
+        <HashRouter
           basename={
             window.location.host === 'www.ommish.com'
               ? 'character-sheets'
@@ -21,7 +21,7 @@ observer
           }
         >
           <App />
-        </BrowserRouter>,
+        </HashRouter>,
       );
     }
   })
