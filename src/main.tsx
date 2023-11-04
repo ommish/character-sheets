@@ -13,13 +13,7 @@ observer
     const root = document.getElementById('root');
     if (root) {
       ReactDOM.createRoot(root).render(
-        <HashRouter
-          basename={
-            window.location.host === 'www.ommish.com'
-              ? 'character-sheets'
-              : undefined
-          }
-        >
+        <HashRouter>
           <App />
         </HashRouter>,
       );
