@@ -14,12 +14,10 @@ export const DeathSaves: React.FC = () => {
   const storeCharacter = useStoreCharacter();
   const { submitRollRequest } = useDice();
 
-  const toggleUse = (type: 'failures' | 'successes', used: boolean) => {
+  const toggleUse = (type: 'failures' | 'successes', used: number) => {
     const newCharacter = merge({}, rawCharacter);
     const current = newCharacter.deathSaves[type];
-    newCharacter.deathSaves[type] = used
-      ? Math.max(0, current + 1)
-      : Math.min(MAX, current - 1);
+    newCharacter.deathSaves[type] = Math.min(MAX, Math.max(0, current + used));
     storeCharacter(newCharacter);
   };
 
@@ -31,7 +29,7 @@ export const DeathSaves: React.FC = () => {
           total={MAX}
           remaining={MAX - character.deathSaves.successes}
           toggleUse={(used) => {
-            toggleUse('successes', used);
+            toggleUse('successes', used ? 1 : -1);
           }}
         />
       </div>
@@ -41,7 +39,7 @@ export const DeathSaves: React.FC = () => {
           total={MAX}
           remaining={MAX - character.deathSaves.failures}
           toggleUse={(used) => {
-            toggleUse('failures', used);
+            toggleUse('failures', used ? 1 : -1);
           }}
         />
       </div>
@@ -56,8 +54,9 @@ export const DeathSaves: React.FC = () => {
           onClick={() => {
             submitRollRequest({
               label: 'Death save',
-              onRoll: (roll) => {
-                toggleUse(roll < 10 ? 'failures' : 'successes', true);
+              onRoll: (roll, critType) => {
+                const toToggle = roll < 10 ? 'failures' : 'successes';
+                toggleUse(toToggle, critType ? 2 : 1);
               },
               dice: [
                 {

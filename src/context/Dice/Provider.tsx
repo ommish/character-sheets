@@ -55,6 +55,13 @@ export const DiceProvider: React.FC<{ children: ReactNode }> = ({
             acc + result.roll.reduce((acc, result) => acc + result, 0),
           0,
         ),
+        dice.length === 1 && dice[0].die === 'd20'
+          ? dice[0].roll[0] === 20
+            ? 'crit'
+            : dice[0].roll[0] === 1
+            ? 'crit-fail'
+            : undefined
+          : undefined,
       );
       setRollRequest(newRollRequest);
       show();

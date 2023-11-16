@@ -7,7 +7,9 @@ export interface RollRequestSegment {
 }
 export interface RollRequest {
   dice: RollRequestSegment[];
-  onRoll: ((total: number) => void) | undefined;
+  onRoll:
+    | ((total: number, critType: 'crit' | 'crit-fail' | undefined) => void)
+    | undefined;
   label: string | undefined;
 }
 
