@@ -1,13 +1,20 @@
 import React from 'react';
-import type { DiceContext as TDiceContext } from './types';
+import type { DiceContext as IDiceContext } from './types';
 
-export const DiceContext = React.createContext<TDiceContext>({
+const defaultFunc = () => {
+  throw new Error('DiceContext is not initialized');
+};
+
+export const DiceContext = React.createContext<IDiceContext>({
   isOpen: false,
-  toggleOpen: () => {
-    throw new Error('DiceContext is not initialized');
-  },
-  previousResults: [],
-  cart: [],
-  order: null,
-  result: null,
+  hide: defaultFunc,
+  show: defaultFunc,
+  rollRequest: null,
+  rollResults: [],
+  submitRollRequest: defaultFunc,
+  diceToRoll: [],
+  addDie: defaultFunc,
+  removeDie: defaultFunc,
+  clearDice: defaultFunc,
+  rollDice: defaultFunc,
 });

@@ -1,98 +1,148 @@
-// import React, {
-//   RefObject,
-//   useCallback,
-//   useEffect,
-//   useRef,
-//   useState,
-// } from 'react';
-// import { d10, d12, d20, d4, d6, d8 } from '../../../components/Dice/icons';
-// import { DICE, Die } from '../../../types';
+import React, { useRef } from 'react';
+import { RollResult, RollResults } from '../../context/Dice/types';
+import { useDice } from '../../hooks/useDice';
+import { DICE } from '../../types';
+import './Dice.scss';
+import { icons } from './icons';
+import { rollClassName } from './utils';
 
-// export const Dice: React.FC = () => {
-//   const wrapperRef = useRef<HTMLDivElement>(null);
-//   const [dice, setDice] = useState<{ die: Die; roll: number }[]>([]);
-//   const onReset = useCallback(() => {
-//     setDice([]);
-//   }, []);
-//   const [showDice, setShow] = useState(false);
-//   const onShow = useCallback(() => {
-//     setShow(true);
-//   }, []);
-//   const onHide = useCallback(() => {
-//     setShow(false);
-//     onReset();
-//     // eslint-disable-next-line
-//   }, []);
-//   useOnClickOutside(wrapperRef, onHide);
+const ResultDescription: React.FC<{ result: RollResult }> = ({ result }) => {
+  return (
+    <span>
+      {result.count}
+      <i>{result.die}</i> (
+      {result.roll.map((roll, i) => (
+        <span key={i}>
+          {i !== 0 && ' + '}
+          <span className={rollClassName(result.die === 'd20', roll)}>
+            {roll}
+          </span>
+        </span>
+      ))}
+      ){result.bonus !== null && ` + ${result.bonus}`}
+    </span>
+  );
+};
 
-//   if (!showDice) {
-//     return (
-//       <div className="toggle-wrapper">
-//         <button
-//           type="button"
-//           onClick={onShow}
-//           className="die"
-//           title="Toggle die"
-//         >
-//           <div className="roll">ROLL</div>
-//           {d20('secondary2', '56')}
-//         </button>
-//       </div>
-//     );
-//   }
+const RollResult: React.FC<{ results: RollResults }> = ({ results }) => {
+  const subtotals = results.dice.map(
+    ({ roll, bonus }) =>
+      roll.reduce((acc, value) => acc + value, 0) + (bonus ?? 0),
+  );
+  const total = (
+    <strong className="total">
+      {subtotals.reduce((acc, value) => acc + value, 0)}
+    </strong>
+  );
+  const label = results.label && <h3>{results.label}</h3>;
+  if (results.dice.length === 1) {
+    return (
+      <div className="mb-1">
+        {label}
+        <span
+          className={rollClassName(
+            results.dice[0].count === 1 && results.dice[0].die === 'd20',
+            results.dice[0].roll[0],
+          )}
+        >
+          {total}
+        </span>{' '}
+        = <ResultDescription result={results.dice[0]} />
+      </div>
+    );
+  }
+  return (
+    <div className="mb-1">
+      {label}
+      {total} ={' '}
+      {subtotals.map((value, j) => (
+        <>
+          {j !== 0 && ' + '}
+          <span key={j}>
+            <strong className="subtotal">{value}</strong> (
+            <ResultDescription result={results.dice[j]} />)
+          </span>
+        </>
+      ))}
+    </div>
+  );
+};
 
-//   return (
-//     <div className="dice-wrapper">
-//       <div className="buttons">
-//         {DICE.map((die) => (
-//           <button
-//             key={die}
-//             type="button"
-//             onClick={() => {
-//               setDice([{ die, roll: dieToRoller[die]() }].concat(dice));
-//             }}
-//             className="die"
-//             title={die}
-//           >
-//             <div className="label">{die}</div>
-//             {diceIcons[die]('primary3', '48')}
-//             <div className="count">
-//               {dice.filter((rolledDie) => rolledDie.die === die).length}
-//             </div>
-//           </button>
-//         ))}
-//         <button type="button" onClick={onReset} className="reset" title="Reset">
-//           Reset
-//         </button>
-//       </div>
-//       <div className="rolled">
-//         {dice.map(({ die, roll }, i) => (
-//           <React.Fragment key={i.toString()}>
-//             <div
-//               className={`die ${
-//                 die === 'd20' && roll === 1 ? 'crit-fail' : ''
-//               } ${die === 'd20' && roll === 20 ? 'crit' : ''}`}
-//             >
-//               <div className="label">{die}</div>
-//               {diceIcons[die](
-//                 die === 'd20' && roll === 1
-//                   ? 'error5'
-//                   : die === 'd20' && roll === 20
-//                   ? 'success5'
-//                   : 'warning2',
-//                 '48',
-//               )}
-//               <div className="roll">{roll}</div>
-//             </div>
-//             <span className="plus">{i < dice.length - 1 && '+'}</span>
-//           </React.Fragment>
-//         ))}
-//       </div>
-//       <div className="total">
-//         = {dice.reduce((acc, { roll }) => acc + roll, 0)}
-//       </div>
-//     </div>
-//   );
-// };
+export const Dice: React.FC = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-export {};
+  const {
+    isOpen,
+    hide,
+    show,
+    diceToRoll,
+    addDie,
+    clearDice,
+    rollDice,
+    rollResults,
+  } = useDice();
+
+  if (!isOpen) {
+    return (
+      <div className="toggle-wrapper hide-on-print">
+        <button type="button" onClick={show} className="die" title="Toggle die">
+          <div className="roll">ROLL</div>
+          {icons.d20('secondary2', '56')}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dice-wrapper hide-on-print" ref={wrapperRef}>
+      <div className="dice">
+        {DICE.map((die) => (
+          <button
+            key={die}
+            type="button"
+            onClick={() => {
+              addDie(die);
+            }}
+            className="die"
+            aria-label={`Add ${die}`}
+          >
+            <div className="label">{die}</div>
+            {icons[die]('primary3', '48')}
+            <div className="count">
+              {diceToRoll.filter((toRoll) => toRoll === die).length}
+            </div>
+          </button>
+        ))}
+      </div>
+      <div className="dice-actions">
+        <button
+          type="button"
+          onClick={rollDice}
+          disabled={diceToRoll.length === 0}
+        >
+          Roll
+        </button>
+        <button
+          type="button"
+          onClick={clearDice}
+          disabled={diceToRoll.length === 0}
+        >
+          Unselect All
+        </button>
+        <button type="button" onClick={hide}>
+          Close
+        </button>
+      </div>
+      <div className="roll-results">
+        {rollResults[0] && <RollResult results={rollResults[0]} />}
+        {rollResults.length > 1 && (
+          <div className="previous-results">
+            {rollResults.slice(1).map((results, i) => (
+              <RollResult results={results} key={i} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

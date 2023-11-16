@@ -1,9 +1,9 @@
 import { FormEventHandler } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { storeCharacter } from '../../data/store';
 import {
   ABILITY_ID,
   ADD_TO_HIT_ID,
+  BONUS_ID,
   COUNT_ID,
   DAMAGE_ID,
   DIE_ID,
@@ -39,7 +39,10 @@ import {
 } from '../../types';
 
 export const getOnSubmit =
-  (navigate: NavigateFunction): FormEventHandler =>
+  (
+    storeCharacter: (newCharacter: Character) => void,
+    navigate: NavigateFunction,
+  ): FormEventHandler =>
   (e) => {
     e.preventDefault();
 
@@ -86,14 +89,18 @@ export const getOnSubmit =
       (_, i) => statusEffectsOptions.item(i)?.value as StatusEffect,
     );
 
+    const maxHealth =
+      parseInt((getElement('health.max') as HTMLInputElement).value) || 0;
+    const currentHealth = (getElement('health.current') as HTMLInputElement)
+      .value;
+    const tempHealth = (getElement('health.temp') as HTMLInputElement).value;
+    const hitDice = (getElement('health.dice') as HTMLInputElement).value;
+
     const health = {
       max: parseInt((getElement('health.max') as HTMLInputElement).value) || 0,
-      current:
-        parseInt((getElement('health.current') as HTMLInputElement).value) || 0,
-      temp:
-        parseInt((getElement('health.temp') as HTMLInputElement).value) || null,
-      dice:
-        parseInt((getElement('health.dice') as HTMLInputElement).value) || null,
+      current: currentHealth ? parseInt(currentHealth) || 0 : maxHealth,
+      temp: tempHealth ? parseInt(tempHealth) || 0 : null,
+      dice: hitDice ? parseInt(hitDice) || 0 : level,
     };
 
     const money = CURRENCIES.reduce<Money>(
@@ -239,15 +246,18 @@ export const getOnSubmit =
                 ) as HTMLInputElement
               ).value,
             ) || 0,
+          bonus:
+            parseInt(
+              (
+                getElement(
+                  BONUS_ID(WEAPONS_N_DAMAGE_O_ID(i, j)),
+                ) as HTMLInputElement
+              ).value,
+            ) || 0,
           type: (
             getElement(TYPE_ID(WEAPONS_N_DAMAGE_O_ID(i, j))) as HTMLInputElement
           ).value as DamageType,
         })),
-        additionalDamage:
-          parseInt(
-            (getElement(`weapons.${i}.additionalDamage`) as HTMLInputElement)
-              .value,
-          ) || 0,
         additionalToHit:
           parseInt(
             (getElement(ADD_TO_HIT_ID(WEAPONS_N_ID(i))) as HTMLInputElement)

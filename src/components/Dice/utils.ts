@@ -15,3 +15,12 @@ const dieToRoller: Record<Die, () => number> = {
 export const rollDie = (die: Die): number => {
   return dieToRoller[die]();
 };
+
+export const rollClassName = (isD20: boolean, roll: number) =>
+  isD20
+    ? roll === 20
+      ? 'crit'
+      : roll === 1
+      ? 'crit-fail'
+      : undefined
+    : undefined;

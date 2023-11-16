@@ -1,13 +1,17 @@
+import { merge } from 'lodash';
 import React, { useState } from 'react';
 import { AccordionList, Checkbox, UsesTracker } from '../../../components';
 import { useCharacter } from '../../../hooks/useCharacter';
+import { useRawCharacter } from '../../../hooks/useRawCharacter';
+import { useStoreCharacter } from '../../../hooks/useStoreCharacter';
 import { SpellLevel } from '../../../types';
-import { getStoredCharacter, storeCharacter } from '../../../data/store';
 
 const base = {} as Record<SpellLevel, number>;
 
 export const Spells: React.FC = () => {
   const character = useCharacter();
+  const rawCharacter = useRawCharacter();
+  const storeCharacter = useStoreCharacter();
   const levels = Object.keys(character.spells) as SpellLevel[];
   const [toggleAll, setToggleAll] = useState<Record<SpellLevel, number>>(
     levels.reduce<Record<SpellLevel, number>>(
@@ -43,9 +47,7 @@ export const Spells: React.FC = () => {
                     total={character.spells[level]?.total ?? 0}
                     remaining={character.spells[level]?.remaining ?? 0}
                     toggleUse={(used) => {
-                      const newCharacter = {
-                        ...getStoredCharacter(character.name),
-                      };
+                      const newCharacter = merge({}, rawCharacter);
                       const spells = newCharacter.spells[level];
                       if (!spells) {
                         return;
@@ -72,11 +74,9 @@ export const Spells: React.FC = () => {
                     action: (
                       <Checkbox
                         ariaLabel="Prepared"
-                        initiallyChecked={!!spell.prepared}
+                        checked={!!spell.prepared}
                         onChange={(e) => {
-                          const newCharacter = {
-                            ...getStoredCharacter(character.name),
-                          };
+                          const newCharacter = merge({}, rawCharacter);
                           const spell = newCharacter.spells[level]?.spells[i];
                           if (!spell) {
                             return;

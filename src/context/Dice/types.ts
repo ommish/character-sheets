@@ -1,29 +1,35 @@
 import { Die } from '../../types';
 
-export interface Order {
-  dice: OrderSegment[];
+export interface RollRequestSegment {
+  count: number;
+  die: Die;
+  bonus: number | null;
+}
+export interface RollRequest {
+  dice: RollRequestSegment[];
   onRoll: ((total: number) => void) | undefined;
   label: string | undefined;
 }
-export interface OrderSegment {
-  count: number;
-  die: Die;
-  bonus: number;
+
+export interface RollResult extends RollRequestSegment {
+  roll: number[];
 }
 
-export interface Results {
-  dice: Result[];
+export interface RollResults {
+  dice: RollResult[];
   label: string | undefined;
-}
-export interface Result extends OrderSegment {
-  roll: number[];
 }
 
 export interface DiceContext {
   isOpen: boolean;
-  toggleOpen: (isOpen: boolean) => void;
-  previousResults: Results[];
-  cart: Die[];
-  order: Order | null;
-  result: Results | null;
+  hide: () => void;
+  show: () => void;
+  rollRequest: RollRequest | null;
+  rollResults: RollResults[];
+  submitRollRequest: (rollRequest: RollRequest) => void;
+  diceToRoll: Die[];
+  addDie: (die: Die) => void;
+  removeDie: (index: number) => void;
+  clearDice: () => void;
+  rollDice: () => void;
 }

@@ -135,4 +135,4 @@ export const icons = {
   d12,
   d20,
   d100: d10,
-};
+} as const;

@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { deleteCharacter, storeCharacter } from '../../data/store';
 import { Character } from '../../types';
 import { useCharacters } from '../../hooks/useCharacters';
 import { exportCharacter } from '../../data/export';
+import { useStoreCharacter } from '../../hooks/useStoreCharacter';
+import { useDeleteCharacter } from '../../hooks/useDeleteCharacter';
 
 export const List: React.FC = () => {
   const navigate = useNavigate();
   const characters = useCharacters();
+  const storeCharacter = useStoreCharacter();
+  const deleteCharacter = useDeleteCharacter();
   return (
     <main>
       <h2 className="pl-2 my-1">Characters</h2>
@@ -40,7 +43,6 @@ export const List: React.FC = () => {
                   )
                 ) {
                   deleteCharacter(character.name);
-                  window.location.reload();
                 }
               }}
             >

@@ -1,0 +1,53 @@
+@import '../../variables.scss';
+
+.toggle-wrapper,
+.dice-wrapper {
+  padding: 6px;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  max-width: 720px;
+}
+
+.dice-actions {
+  display: flex;
+  column-gap: 6px;
+  margin-top: 6px;
+}
+
+.roll-results {
+  background-color: white;
+  max-height: calc(100vh - 72px - 140px);
+  overflow-y: auto;
+  margin-top: 6px;
+  > div:first-child {
+    border-width: 6px;
+    border-style: solid;
+    border-color: $color-8;
+    padding: 0 6px 6px;
+  }
+  > div:not(:first-child) {
+    position: relative;
+    padding: 0 12px 6px;
+    background-color: white;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.3)
+    );
+  }
+
+  .crit {
+    color: green;
+  }
+  .crit-fail {
+    color: red;
+  }
+}
+
+.dice button {
+  width: 72px;
+}

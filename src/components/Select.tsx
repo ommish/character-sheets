@@ -1,8 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  SelectHTMLAttributes,
-  useState,
-} from 'react';
+import React, { ChangeEventHandler, SelectHTMLAttributes } from 'react';
 
 export const Select: React.FC<
   {
@@ -14,40 +10,29 @@ export const Select: React.FC<
   } & (
     | {
         multi: true;
-        initialValue: string[];
+        value: string[];
         selectedItemWrapper: React.FC<{
           children: string;
-          onRemove: () => void;
         }>;
       }
-    | { multi?: false; initialValue: string; selectedItemWrapper?: null }
+    | { multi?: false; value: string; selectedItemWrapper?: null }
   ) &
     SelectHTMLAttributes<HTMLSelectElement>
 > = ({
   multi,
-  initialValue,
+  value,
   selectedItemWrapper: SelectedItemWrapper,
   onChange,
   className = '',
   options,
   ...rest
 }) => {
-  const [value, setValue] = useState(initialValue);
   return (
     <>
       {multi && (
         <ul>
           {(value as string[]).map((val) => (
-            <SelectedItemWrapper
-              key={val}
-              onRemove={() => {
-                setValue(
-                  (value as string[]).filter((current) => current !== val),
-                );
-              }}
-            >
-              {val}
-            </SelectedItemWrapper>
+            <SelectedItemWrapper key={val}>{val}</SelectedItemWrapper>
           ))}
         </ul>
       )}
@@ -55,18 +40,7 @@ export const Select: React.FC<
         {...rest}
         className={className + ' select'}
         value=""
-        onChange={(e) => {
-          onChange(e);
-          if (
-            multi &&
-            e.currentTarget.value &&
-            !value.includes(e.currentTarget.value)
-          ) {
-            setValue(value.concat(e.currentTarget.value));
-          } else if (!multi) {
-            setValue(e.currentTarget.value);
-          }
-        }}
+        onChange={onChange}
       >
         {options.map((option) => (
           <option key={option.label} value={option.value}>

@@ -1,11 +1,15 @@
+import { merge } from 'lodash';
 import React, { useState } from 'react';
 import { AccordionList, UsesTracker } from '../../../components';
 import { useCharacter } from '../../../hooks/useCharacter';
-import { getStoredCharacter, storeCharacter } from '../../../data/store';
+import { useRawCharacter } from '../../../hooks/useRawCharacter';
+import { useStoreCharacter } from '../../../hooks/useStoreCharacter';
 
 export const Features: React.FC = () => {
   const character = useCharacter();
   const [toggleAll, setToggleAll] = useState(0);
+  const rawCharacter = useRawCharacter();
+  const storeCharacter = useStoreCharacter();
   return (
     <div className="bordered-box mt-1">
       <AccordionList
@@ -19,7 +23,7 @@ export const Features: React.FC = () => {
               total={fe.uses.total}
               remaining={fe.uses.remaining}
               toggleUse={(used) => {
-                const newCharacter = { ...getStoredCharacter(character.name) };
+                const newCharacter = merge({}, rawCharacter);
                 const uses = newCharacter.features[i].uses;
                 if (!uses) {
                   return;

@@ -105,13 +105,13 @@ export interface WeaponDamage {
   die: Die;
   count: number;
   type: DamageType;
+  bonus: number | null;
 }
 export interface Weapon {
   name: string;
   proficient: boolean;
   ability: Ability;
   damage: WeaponDamage[];
-  additionalDamage: number;
   additionalToHit: number;
   notes?: string;
 }

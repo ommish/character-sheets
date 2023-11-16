@@ -3,18 +3,18 @@ import { getOnRemove } from '../pages/Create/getOnRemove';
 import { ABILITIES, DAMAGE_TYPES, DICE, Weapon, WeaponDamage } from '../types';
 import {
   ABILITY_ID,
-  ADD_TO_DMG_ID,
   ADD_TO_HIT_ID,
+  BONUS_ID,
   COUNT_ID,
+  DAMAGE_ID,
   DIE_ID,
-  TYPE_ID,
   NAME_ID,
   NOTES_ID,
   PROFICIENT_ID,
+  TYPE_ID,
   WEAPONS_ID,
-  WEAPONS_N_ID,
-  DAMAGE_ID,
   WEAPONS_N_DAMAGE_O_ID,
+  WEAPONS_N_ID,
 } from './formIds';
 import { getElement } from './getElement';
 import { makeLabel } from './makeLabel';
@@ -33,11 +33,14 @@ const addDamage = (n: number, damage?: WeaponDamage) => {
   remove.innerHTML = '❌';
   remove.onclick = getOnRemove([
     (idx) => DIE_ID(WEAPONS_N_DAMAGE_O_ID(n, idx)),
+    (idx) => BONUS_ID(WEAPONS_N_DAMAGE_O_ID(n, idx)),
     (idx) => COUNT_ID(WEAPONS_N_DAMAGE_O_ID(n, idx)),
     (idx) => TYPE_ID(WEAPONS_N_DAMAGE_O_ID(n, idx)),
   ]);
 
   const damageId = WEAPONS_N_DAMAGE_O_ID(n, index);
+
+  console.log('damage', damage);
 
   const dieLabel = makeLabel('Die');
   const die = document.createElement('select');
@@ -49,6 +52,7 @@ const addDamage = (n: number, damage?: WeaponDamage) => {
     const option = document.createElement('option');
     option.value = die;
     option.innerText = die;
+    option.selected = die === damage?.die;
     return option;
   });
   die.append(...dieOptions);
@@ -62,26 +66,38 @@ const addDamage = (n: number, damage?: WeaponDamage) => {
   count.type = 'number';
   count.step = '1';
   count.required = true;
+  count.min = '1';
   count.value = damage?.count.toString() ?? '';
   countLabel.appendChild(count);
 
+  // Damage - Bonus
+  const bonusLabel = makeLabel('Bonus Dmg.');
+  const bonus = document.createElement('input');
+  bonus.name = BONUS_ID(damageId);
+  bonus.id = bonus.name;
+  bonus.type = 'number';
+  bonus.step = '1';
+  bonus.value = damage?.bonus?.toString() ?? '';
+  bonusLabel.appendChild(bonus);
+
   // Damage - Type
-  const typeLabel = makeLabel('Damage Type');
+  const typeLabel = makeLabel('Dmg. Type');
   const type = document.createElement('select');
   type.name = TYPE_ID(damageId);
   type.id = type.name;
   type.required = true;
   type.value = damage?.type ?? DAMAGE_TYPES[0];
-  const typeOptions = DAMAGE_TYPES.map((type) => {
+  const typeOptions = DAMAGE_TYPES.map((dmg) => {
     const option = document.createElement('option');
-    option.value = type;
-    option.innerText = capitalize(type);
+    option.value = dmg;
+    option.innerText = capitalize(dmg);
+    option.selected = dmg === damage?.type;
     return option;
   });
   type.append(...typeOptions);
   typeLabel.appendChild(type);
 
-  fieldSet.append(remove, legend, dieLabel, countLabel, typeLabel);
+  fieldSet.append(remove, legend, dieLabel, countLabel, bonusLabel, typeLabel);
   list.append(fieldSet);
   return list;
 };
@@ -134,6 +150,7 @@ export const addWeapon = (weapon?: Weapon) => {
     const option = document.createElement('option');
     option.value = ability;
     option.innerText = capitalize(ability);
+    option.selected = ability === weapon?.ability;
     return option;
   });
   ability.append(...abilityOptions);
@@ -156,16 +173,6 @@ export const addWeapon = (weapon?: Weapon) => {
   };
   const addDamageDiv = document.createElement('div');
   addDamageDiv.append(addDamageButton);
-
-  // Bonus Damage
-  const damageBonusLabel = makeLabel('Bonus Damage');
-  const damageBonus = document.createElement('input');
-  damageBonus.name = ADD_TO_DMG_ID(WEAPONS_N_ID(index));
-  damageBonus.id = damageBonus.name;
-  damageBonus.type = 'number';
-  damageBonus.step = '1';
-  damageBonus.value = weapon?.additionalDamage.toString() ?? '';
-  damageBonusLabel.appendChild(damageBonus);
 
   // Bonus to Hit
   const hitBonusLabel = makeLabel('Bonus to Hit');
@@ -193,7 +200,6 @@ export const addWeapon = (weapon?: Weapon) => {
     abilityLabel,
     damageSet,
     addDamageDiv,
-    damageBonusLabel,
     hitBonusLabel,
     notesLabel,
   );

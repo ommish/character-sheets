@@ -2,6 +2,7 @@ import { capitalize, startCase } from 'lodash';
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { newArray } from '../../formUtils/newArray';
+import { useStoreCharacter } from '../../hooks/useStoreCharacter';
 import {
   ABILITIES,
   CURRENCIES,
@@ -18,12 +19,13 @@ import { Weapons } from './Weapons';
 import { getOnSubmit } from './getOnSubmit';
 
 export const Create: React.FC = () => {
+  const storeCharacter = useStoreCharacter();
   const navigate = useNavigate();
   const { name } = useParams();
   return (
     <main className="character-create">
       <section>
-        <form onSubmit={getOnSubmit(navigate)}>
+        <form onSubmit={getOnSubmit(storeCharacter, navigate)}>
           <div className="save">
             <Link to={name ? `/${name}` : '/'}>Exit without saving</Link>
             <button type="submit">SAVE</button>

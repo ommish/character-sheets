@@ -1,20 +1,16 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { ChangeEventHandler } from 'react';
 
 export const Checkbox: React.FC<{
-  initiallyChecked: boolean;
+  checked: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   ariaLabel: string;
-}> = ({ initiallyChecked, ariaLabel, onChange }) => {
-  const [checked, setChecked] = useState(initiallyChecked);
+}> = ({ checked, ariaLabel, onChange }) => {
   return (
     <input
       type="checkbox"
       aria-label={ariaLabel}
       checked={checked}
-      onChange={(e) => {
-        setChecked(e.target.checked);
-        onChange(e);
-      }}
+      onChange={onChange}
     />
   );
 };

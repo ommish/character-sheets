@@ -1,10 +1,11 @@
 import { indexOf } from 'lodash';
 import React from 'react';
-import { Select } from '../../../components';
-import { getStoredCharacter, storeCharacter } from '../../../data/store';
-import { useCharacter } from '../../../hooks/useCharacter';
-import { STATUS_EFFECTS, StatusEffect } from '../../../types';
 import { X } from 'react-bootstrap-icons';
+import { Select } from '../../../components';
+import { useCharacter } from '../../../hooks/useCharacter';
+import { useRawCharacter } from '../../../hooks/useRawCharacter';
+import { useStoreCharacter } from '../../../hooks/useStoreCharacter';
+import { STATUS_EFFECTS, StatusEffect } from '../../../types';
 
 const options = [
   {
@@ -15,24 +16,24 @@ const options = [
 
 export const StatusEffects: React.FC = () => {
   const character = useCharacter();
+  const rawCharacter = useRawCharacter();
+  const storeCharacter = useStoreCharacter();
 
   const EffectWrapper: React.FC<{
     children: string;
-    onRemove: () => void;
-  }> = ({ children: effect, onRemove }) => (
+  }> = ({ children: effect }) => (
     <li className="value-2 flex align-center my-0-5">
       <button
         type="button"
         className="hide-on-print"
         onClick={() => {
           const newCharacter = {
-            ...getStoredCharacter(character.name),
+            ...rawCharacter,
           };
           newCharacter.statusEffects = newCharacter.statusEffects.filter(
             (ef) => ef !== effect,
           );
           storeCharacter(newCharacter);
-          onRemove();
         }}
       >
         <X className="hide-on-print" />
@@ -56,15 +57,15 @@ export const StatusEffects: React.FC = () => {
         className="hide-on-print mt-1"
         aria-label="Add Status Effect"
         multi
-        initialValue={character.statusEffects}
+        value={character.statusEffects}
         selectedItemWrapper={EffectWrapper}
         onChange={(e) => {
           const newCharacter = {
-            ...getStoredCharacter(character.name),
+            ...rawCharacter,
           };
           const ef = e.currentTarget.value as StatusEffect | '';
           if (ef && !newCharacter.statusEffects.includes(ef)) {
-            newCharacter.statusEffects.push(ef);
+            newCharacter.statusEffects = newCharacter.statusEffects.concat(ef);
             storeCharacter(newCharacter);
           }
         }}

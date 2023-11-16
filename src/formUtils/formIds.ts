@@ -90,8 +90,8 @@ export function COUNT_ID(item: ReturnType<typeof WEAPONS_N_DAMAGE_O_ID>) {
 export function TYPE_ID(item: ReturnType<typeof WEAPONS_N_DAMAGE_O_ID>) {
   return `${item}.type`;
 }
-export function ADD_TO_DMG_ID(item: ReturnType<typeof WEAPONS_N_ID>) {
-  return `${item}.additionalDamage`;
+export function BONUS_ID(item: ReturnType<typeof WEAPONS_N_DAMAGE_O_ID>) {
+  return `${item}.bonus`;
 }
 export function ADD_TO_HIT_ID(item: ReturnType<typeof WEAPONS_N_ID>) {
   return `${item}.additionalToHit`;
