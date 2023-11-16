@@ -42,7 +42,6 @@ export const HitDice: React.FC = () => {
         <button
           type="button"
           className="label-1 plain-button"
-          disabled={!character.health.dice}
           onClick={() => {
             submitRollRequest({
               label: 'Hit die',
